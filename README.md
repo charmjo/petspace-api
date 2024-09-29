@@ -5,8 +5,8 @@
 - [ ] Test connection with mobile app
 - [ ] Set up mobile authentication
 ### Web
-- [ ] Test login
-- [ ] Test logout 
+- [x] Test login
+- [ ] Test logout, need to return a message   
 - [ ] Test Registration
 
 ## If you're curious as to how to run this...
