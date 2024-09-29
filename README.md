@@ -1,5 +1,13 @@
 # PetSpace API
-
+## TO DO
+### Mobile
+- [ ] Set up mobile routing
+- [ ] Test connection with mobile app
+- [ ] Set up mobile authentication
+### Web
+- [ ] Test login
+- [ ] Test logout 
+- [ ] Test Registration
 
 ## If you're curious as to how to run this...
 This is assuming you have pulled the repo from github. 
