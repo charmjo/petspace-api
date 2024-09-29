@@ -19,5 +19,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        /*TODO: CHARM, DO NOT FORGET TO REMOVE THIS WHEN DOING PROD WORK!*/
+        User::factory()->create([
+            'name' => 'Charm Test',
+            'email' => 'test2@example.com',
+            'password' => 'test',
+        ]);
     }
 }
