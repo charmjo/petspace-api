@@ -18,7 +18,10 @@ This is assuming you have pulled the repo from github.
 - (I did not include any other database as I am using sqlite for testing)
 
 ### Setup:
-*Make sure you're entering these commands at the root folder*
+Before doing anything make sure:
+1. *you're entering these commands at the root folder*
+2. *your php interpreter is running*
+---
 1. run ``` composer install``` to install dependencies
 2. run ``` php artisan migrate``` to setup the database
 3. run ``` php artisan db:seed``` to seed the db (this should not matter once the user crud is set up.)
