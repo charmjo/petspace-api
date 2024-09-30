@@ -6,8 +6,15 @@
 - [ ] Set up mobile authentication
 ### Web
 - [x] Test login
-- [ ] Test logout, need to return a message   
-- [ ] Test Registration
+- [x] Test logout  
+- [x] Test Registration
+- [ ] Check email verification and remember token
+- [ ] Return message for logout
+
+### Models
+- [ ] Make a custom User model
+
+### Controllers
 
 ## If you're curious as to how to run this...
 This is assuming you have pulled the repo from github. 
@@ -32,7 +39,7 @@ Before doing anything make sure:
 - Message me (charmjo) for the .env file
 - Make sure no localhost instance is running at port 8000, if there is, 
   check which port the app is served and change the url from there.
-- 
+- Also, sample web requests, please send me your emails on WhatsApp to add you on our Postman workspace 
 
 ## Setting up mobile testing
 **TODO**

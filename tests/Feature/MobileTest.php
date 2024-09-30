@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class MobileLoginTest extends TestCase
+class MobileTest extends TestCase
 {
     // refresh to know we're operating a clean database
     use RefreshDatabase;
