@@ -1,4 +1,4 @@
-# Debugging API setup
+# Debugging Postman API setup
 Some issues I have encountered
 
 ## XSRF Token mismatch Scenario 1
