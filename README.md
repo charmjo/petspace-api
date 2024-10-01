@@ -1,29 +1,46 @@
 # PetSpace API
-## TO DO
-### Mobile
-- [ ] Set up mobile routing
-- [ ] Test connection with mobile app
-- [ ] Set up mobile authentication
-### Web
-- [ ] Test login
-- [ ] Test logout 
-- [ ] Test Registration
+- For localhost setup debugging issues, go to ```documentation/debugging```
 
-## If you're curious as to how to run this...
-This is assuming you have pulled the repo from github. 
- 
-### Prerequisites:
-- Php installed
+## Modes of Authentication
+- For web requests, cookie-based authentication is used
+- For mobile requests, token-base authentication is used
+
+## Prerequisites:
+- Php installed (xampp is easiest to setup)
 - Composer (PHP equivalent for npm)
-- (I did not include any other database as I am using sqlite for testing)
+- Database (I did not include any other database as I am using sqlite for testing, I'm using ORM to make schema migration and versioning less painful)
+- Place the api project folder inside ```xampp/htdocs``` 
+
+### Download xampp
+Installation guide for ```Windows```
+https://phpandmysql.com/extras/installing-xampp/
+
+Xampp installer:
+https://www.apachefriends.org/download.html
+
+### Setting up Composer:
+Composer is php's package manager. Only php is needed to run this.
+- For ```macOS``` users, use homebrew for less pain:
+https://formulae.brew.sh/formula/composer
+
+- For ```windows``` users:
+https://www.geeksforgeeks.org/how-to-install-php-composer-on-windows/
+
 
 ### Setup:
-*Make sure you're entering these commands at the root folder*
-1. run ``` composer install``` to install dependencies
-2. run ``` php artisan migrate``` to setup the database
-3. run ``` php artisan db:seed``` to seed the db (this should not matter once the user crud is set up.)
-4. run ``` php artisan serve ``` to run the laravel server for testing 
-5. Feel free to use __Postman__  to test the web endpoints :)
+Before doing anything make sure:
+1. *you're entering these commands at the project root folder*
+2. *your php interpreter is running*
+---
+* **Step 1.** run ``` composer install``` to install dependencies
+* **Step 2.** run ``` php artisan migrate``` to setup the database
+* **Step 3.** run ``` php artisan db:seed``` to seed the db (this should not matter once the user crud is set up.)
+* **Step 4.** Laravel sort of 'caches' its settings so the following commands have to be run should there be any changes to the .env file, routes, caches or config:
+  * ```php artisan config:clear``` - clear config cache. In most cases, only when there are changes inside the config directory will this be run.
+  * ```php artisan cache:clear``` - clear cache
+  * ```php artisan optimize```  - general-purpose clearing and caching
+* **Step 5.** run ``` php artisan serve ``` to run the laravel server for testing 
+* **Step 6.** Feel free to use __Postman__  to test the web endpoints :')
 
 ### Notes:
 - Message me (charmjo) for the .env file
