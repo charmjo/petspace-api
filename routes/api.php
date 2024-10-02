@@ -6,7 +6,15 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
+// my custom controllers
+use App\Http\Controllers\UserMobileController;
+use Laravel\Fortify\RoutePath;
 
+
+// unprotected routes:
+Route::post(RoutePath::for('create-user','/create-user'), [UserMobileController::class, 'store']);
+
+// protected route
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
