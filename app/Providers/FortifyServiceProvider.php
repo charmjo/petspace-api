@@ -13,6 +13,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
+// logs have to stay
+use Laravel\Fortify\Contracts\LoginResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -20,7 +25,24 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // I will clean this up later on. Just need something to demo on monday.
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request)
+            {
+                Log::debug("user".Auth::user());
+                Log::debug("user name".Auth::user()->email);
+
+                $userDetail = Auth::user();
+                    return response()->json(
+                    ['two_factor' => false,
+                     'user' => [
+                        'name'=> $userDetail->name,
+                        'email'=> $userDetail->email
+                     ]
+                    ]
+                );
+            }
+        });
     }
 
     /**
