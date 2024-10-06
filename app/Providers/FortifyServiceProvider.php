@@ -15,6 +15,7 @@ use Laravel\Fortify\Fortify;
 
 // logs have to stay
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,6 +42,20 @@ class FortifyServiceProvider extends ServiceProvider
                      ]
                     ]
                 );
+            }
+        });
+
+        // I will clean this up later on. Just need something to demo on monday.
+        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+            public function toResponse($request)
+            {
+                $userDetail = Auth::user();
+                return response()->json(
+                ['user' => [
+                    'name'=> $userDetail->name,
+                    'email'=> $userDetail->email
+                 ]
+                ]);
             }
         });
     }

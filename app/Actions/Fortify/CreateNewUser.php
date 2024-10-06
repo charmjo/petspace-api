@@ -28,7 +28,8 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
-            'password' => $this->passwordRules(),
+            // tinamban for testing
+            'password' => ['required', 'string', 'max:255'],
         ])->validate();
 
         return User::create([
