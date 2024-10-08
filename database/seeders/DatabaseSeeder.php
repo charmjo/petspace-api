@@ -38,7 +38,13 @@ class DatabaseSeeder extends Seeder
         /*TODO: CHARM, DO NOT FORGET TO REMOVE THIS WHEN DOING PROD WORK!*/
         User::factory()->create([
             'name' => 'Mariana Test',
-            'email' => 'maraian@example.com',
+            'email' => 'mariana@example.com',
+            'password' => 'p@ssW0rd',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Apurva Test',
+            'email' => 'apurva@example.com',
             'password' => 'p@ssW0rd',
         ]);
     }
