@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('role')->nullable();
+            $table->string('dob')->nullable();
+            $table->string('gender')->nullable(); // I'd rather have the front end deal with this
+            $table->string('is_form_filled')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
