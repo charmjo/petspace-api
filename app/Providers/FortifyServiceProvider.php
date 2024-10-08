@@ -16,8 +16,9 @@ use Laravel\Fortify\Fortify;
 // logs have to stay
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
+
+use App\Http\Requests\Account\CtmLoginResponse as _CtmLoginResponse;
+use App\Http\Requests\Account\CtmRegisterResponse as _CtmRegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -26,38 +27,9 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // I will clean this up later on. Just need something to demo on monday.
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-            public function toResponse($request)
-            {
-                Log::debug("user".Auth::user());
-                Log::debug("user name".Auth::user()->email);
-
-                $userDetail = Auth::user();
-                    return response()->json(
-                    ['two_factor' => false,
-                     'user' => [
-                        'name'=> $userDetail->name,
-                        'email'=> $userDetail->email
-                     ]
-                    ]
-                );
-            }
-        });
-
-        // I will clean this up later on. Just need something to demo on monday.
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
-            public function toResponse($request)
-            {
-                $userDetail = Auth::user();
-                return response()->json(
-                ['user' => [
-                    'name'=> $userDetail->name,
-                    'email'=> $userDetail->email
-                 ]
-                ]);
-            }
-        });
+        // register customizations 
+        $this->app->instance(LoginResponse::class, new _CtmLoginResponse);
+        $this->app->instance(RegisterResponse::class, new _CtmRegisterResponse);
     }
 
     /**
