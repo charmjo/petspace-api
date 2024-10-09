@@ -26,6 +26,11 @@ class TokenAuthController extends Controller
             ]);
         }
     
+        // restrict user to only one token
+        if($user->tokens()->count() >= 1){
+            $user->tokens()->delete();
+        };
+    
         $userToken = $user->createToken($request->device_name)->plainTextToken;
     
         return response()->json([
