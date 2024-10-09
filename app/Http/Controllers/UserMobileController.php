@@ -18,8 +18,7 @@ class UserMobileController extends Controller
         - unya nako maghuna-huna og protect once I got this thing to work!
     */
     public function store(Request $request,
-        CreatesNewUsers $creator) : RegisterResponse
-    
+        CreatesNewUsers $creator)
     {
         // anyways, createnewuser is just an impelementation of createsnewusers and is not beholden to anything so this should be fine???
         event(new Registered($user = $creator->create($request->all())));
