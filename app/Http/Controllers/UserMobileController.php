@@ -18,13 +18,12 @@ class UserMobileController extends Controller
         - unya nako maghuna-huna og protect once I got this thing to work!
     */
     public function store(Request $request,
-        CreatesNewUsers $creator)
+        CreatesNewUsers $creator) 
     {
         // anyways, createnewuser is just an impelementation of createsnewusers and is not beholden to anything so this should be fine???
         event(new Registered($user = $creator->create($request->all())));
         
         // will have to return a json token. I sincerely pray to god this works.
-        // I need something to handle this
         return response()->json(
         ['message' => 'user is now registered'
         ]);

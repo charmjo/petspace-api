@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('role')->nullable(); // pet owner, vet or event organizer
+            $table->string('role')->nullable();
             $table->string('dob')->nullable();
             $table->string('gender')->nullable(); // I'd rather have the front end deal with this
             $table->string('is_form_filled')->nullable();

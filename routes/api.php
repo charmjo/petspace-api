@@ -14,7 +14,7 @@ use Laravel\Fortify\RoutePath;
 // unprotected routes:
 Route::post(RoutePath::for('create-user','/create-user'), [UserMobileController::class, 'store']);
 
-// protected route
+// now, how do I transfer this to another controller?. Ai waitttt... I can just 
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
@@ -30,6 +30,11 @@ Route::post('/sanctum/token', function (Request $request) {
         ]);
     }
 
+    // restrict user to only one token
+    if($user->tokens()->count() >= 1){
+        $user->tokens()->delete();
+    };
+
     $userToken = $user->createToken($request->device_name)->plainTextToken;
 
     return response()->json([
@@ -37,6 +42,7 @@ Route::post('/sanctum/token', function (Request $request) {
     ])->header('Content-Type', 'application/json');
 });
 
+// protected route
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();

@@ -16,13 +16,16 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
+            'first_name' => 'Test',
+            'last_name' => 'User',
             'email' => 'test@example.com',
+            'password' => 'test',
         ]);
 
         /*TODO: CHARM, DO NOT FORGET TO REMOVE THIS WHEN DOING PROD WORK!*/
         User::factory()->create([
-            'name' => 'Charm Test',
+            'first_name' => 'Charm',
+            'last_name' => 'Test',
             'email' => 'test2@example.com',
             'password' => 'test',
         ]);
