@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::create('user_family', function (Blueprint $table) {
             $table->id();
             $table->foreignId('main_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->int('family_member_id');
+            $table->integer('family_member_id');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
