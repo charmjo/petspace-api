@@ -1,10 +1,10 @@
 ## TO DO
 ### Mobile
-- [ ] Set up mobile routing
+- [x] Set up mobile routing
 - [ ] Test connection with mobile app
-- [ ] Set up mobile authentication
+- [x] Set up mobile authentication
 - [x] Set up token request to with existing user in db
-- [ ] Configure registration for mobile
+- [x] Configure registration for mobile
 
 ### Web
 - [x] Test login
@@ -16,5 +16,12 @@
 
 ### Models
 - [ ] Make a custom User model
+
+### Other db stuff
+- [ ] start ERD so I can start creating the ORM schema
+- [ ] do a setup for mysql or postgres
+
+### Infrastr
+
 
 ### Controllers

@@ -16,34 +16,39 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
+            'first_name' => 'Test',
+            'last_name' => 'User',
             'email' => 'test@example.com',
-            'password' => 'p@ssW0rd',
+            'password' => 'test',
         ]);
 
         /*TODO: CHARM, DO NOT FORGET TO REMOVE THIS WHEN DOING PROD WORK!*/
         User::factory()->create([
-            'name' => 'Charm Test',
+            'first_name' => 'Charm',
+            'last_name' => 'Test',
             'email' => 'test2@example.com',
             'password' => 'test',
         ]);
 
         // steve for testing
         User::factory()->create([
-            'name' => 'Steve Test',
+            'first_name' => 'Steve',
+            'last_name' => 'Test',
             'email' => 'steve.test@example.com',
             'password' => 'p@ssW0rd',
         ]);
 
         /*TODO: CHARM, DO NOT FORGET TO REMOVE THIS WHEN DOING PROD WORK!*/
         User::factory()->create([
-            'name' => 'Mariana Test',
+            'first_name' => 'Mariana Test',
+            'last_name' => 'Test',
             'email' => 'mariana@example.com',
             'password' => 'p@ssW0rd',
         ]);
 
         User::factory()->create([
-            'name' => 'Apurva Test',
+            'first_name' => 'Apurva Test',
+            'last_name' => 'Test',
             'email' => 'apurva@example.com',
             'password' => 'p@ssW0rd',
         ]);
