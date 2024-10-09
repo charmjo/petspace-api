@@ -25,6 +25,9 @@ class UserMobileController extends Controller
         event(new Registered($user = $creator->create($request->all())));
         
         // will have to return a json token. I sincerely pray to god this works.
-        return app(RegisterResponse::class);
+        // I need something to handle this
+        return response()->json(
+        ['message' => 'user is now registered'
+        ]);
     }
 }

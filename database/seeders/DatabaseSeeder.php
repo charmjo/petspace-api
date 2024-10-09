@@ -26,5 +26,28 @@ class DatabaseSeeder extends Seeder
             'email' => 'test2@example.com',
             'password' => 'test',
         ]);
+
+        // steve for testing
+        User::factory()->create([
+            'first_name' => 'Steve',
+            'last_name' => 'Test',
+            'email' => 'steve.test@example.com',
+            'password' => 'p@ssW0rd',
+        ]);
+
+        /*TODO: CHARM, DO NOT FORGET TO REMOVE THIS WHEN DOING PROD WORK!*/
+        User::factory()->create([
+            'first_name' => 'Mariana Test',
+            'last_name' => 'Test',
+            'email' => 'mariana@example.com',
+            'password' => 'p@ssW0rd',
+        ]);
+
+        User::factory()->create([
+            'first_name' => 'Apurva Test',
+            'last_name' => 'Test',
+            'email' => 'apurva@example.com',
+            'password' => 'p@ssW0rd',
+        ]);
     }
 }
