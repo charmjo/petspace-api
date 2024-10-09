@@ -16,7 +16,7 @@ use Laravel\Fortify\RoutePath;
 Route::post(RoutePath::for('create-user','/create-user'), [UserMobileController::class, 'store']);
 
 // now, how do I transfer this to another controller?. Ai waitttt... I can just 
-Route::post('/login-token', [TokenAuthController::class,'generateToken']);
+Route::post('/login-token', [UserMobileController::class,'generateToken']);
 
 // protected route
 Route::middleware('auth:sanctum')->group(function () {
