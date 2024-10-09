@@ -13,7 +13,7 @@ use Laravel\Fortify\RoutePath;
 
 
 // unprotected routes:
-Route::post(RoutePath::for('create-user','/create-user'), [UserMobileController::class, 'store']);
+Route::post(RoutePath::for('create-user','/create-user'), [UserMobileController::class, 'createUser']);
 
 // now, how do I transfer this to another controller?. Ai waitttt... I can just 
 Route::post('/login-token', [UserMobileController::class,'generateToken']);
