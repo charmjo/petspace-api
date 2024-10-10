@@ -14,3 +14,8 @@
 - Implemented single-token per user and device type. Old tokens get deleted when a new one is requested
 - Tokens now expire after two hours.
 
+## October 9
+
+### Account and Pet Management
+- added delete and update user account for mobile, still working out web route.
+

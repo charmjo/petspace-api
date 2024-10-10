@@ -1,14 +1,12 @@
 <?php
 
-use App\Http\Controllers\TokenAuthController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
-use Illuminate\Validation\ValidationException;
 
 // my custom controllers
 use App\Http\Controllers\UserMobileController;
+use App\Http\Controllers\UserController;
 use Laravel\Fortify\RoutePath;
 
 
@@ -23,4 +21,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+});
+
+// i'll take care of security once I finish the crud. 
+// also, i'll need to do a web version of this coz I need to know how to protect this.
+Route::prefix('account')->middleware('auth:sanctum')->group(function () {
+    Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
+    Route::put('/update/{id}', [UserController::class, 'updateUser']);
+
 });
