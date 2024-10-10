@@ -10,9 +10,12 @@ class CtmRegisterResponse implements RegisterResponse {
     public function toResponse($request)
     {
         $userDetail = Auth::user();
+        Log::debug($userDetail);
         return response()->json(
         ['user' => [
-            'name'=> $userDetail->name,
+            'id'=> $userDetail->id,
+            'first_name'=> $userDetail->first_name,
+            'last_name'=> $userDetail->last_name,
             'email'=> $userDetail->email
          ]
         ]);
