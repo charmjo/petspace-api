@@ -17,8 +17,8 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 
-use App\Http\Requests\Account\CtmLoginResponse as _CtmLoginResponse;
-use App\Http\Requests\Account\CtmRegisterResponse as _CtmRegisterResponse;
+use App\Http\Responses\Account\CtmLoginResponse as _CtmLoginResponse;
+use App\Http\Responses\Account\CtmRegisterResponse as _CtmRegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {

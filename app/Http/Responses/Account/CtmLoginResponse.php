@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Account;
+namespace App\Http\Responses\Account;
 
 // other dependent classes
 use Illuminate\Support\Facades\Log;

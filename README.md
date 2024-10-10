@@ -1,5 +1,6 @@
 # PetSpace API
 - For localhost setup debugging issues, go to ```documentation/debugging```
+- Please check ```documentation/version-notes``` for any significant changes to the api
 
 ## Modes of Authentication
 - For web requests, cookie-based authentication is used
