@@ -13,9 +13,10 @@
 #### Mobile
 - Implemented single-token per user and device type. Old tokens get deleted when a new one is requested
 - Tokens now expire after two hours.
+- sanctum/get-token now changed to http://localhost:8000/api/get-token
 
 ## October 9
 
 ### Account and Pet Management
 - added delete and update user account for mobile, still working out web route.
-
+- delete uses the DELETE method (route looks like account/update/{id}), update uses the UPDATE method (route looks like account/delete/{id})
