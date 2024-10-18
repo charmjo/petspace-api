@@ -4,7 +4,7 @@
 ### Account and Pet Management
 - added tables for pets and users
 - added soft delete so as to inactivate users instead of deleting them from db.
-- For developers with existing db's please, delete your db as I made changes to the migration schema. Run ```php artisan migrate``` and ```php artisan db:seed```. 
+- For **developers with existing petspace.sqlite db's** please, delete your db as I made changes to the migration schema. Run ```php artisan migrate``` and ```php artisan db:seed```. 
 - I added 5 users in the seed for testing
 - name is now divided into two: first_name and last_name. 
 - When doing a request, please do separate paramters for **first_name** and **last_name**
@@ -19,4 +19,7 @@
 
 ### Account and Pet Management
 - added delete and update user account for mobile, still working out web route.
+- so requests will look like:
+    - PUT account/update/{id}
+    - DELETE account/delete/{id}
 - delete uses the DELETE method (route looks like account/update/{id}), update uses the UPDATE method (route looks like account/delete/{id})
