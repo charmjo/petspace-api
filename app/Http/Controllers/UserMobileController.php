@@ -34,6 +34,7 @@ class UserMobileController extends Controller
         ]);
     }
 
+    // make sure validation is on another class
     public function generateToken (Request $request) {
         $request->validate([
             'email' => 'required|email',
