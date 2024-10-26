@@ -23,3 +23,33 @@
     - PUT account/update/{id}
     - DELETE account/delete/{id}
 - delete uses the DELETE method (route looks like account/update/{id}), update uses the UPDATE method (route looks like account/delete/{id})
+
+## October 22
+### Pet Management
+- added ```POST :: /create``` route.
+- added ```DELETE :: /delete/{id}``` route.
+- added ```PUT :: /update/{id} ``` route.
+- added ```POST :: /pet-list``` route.
+    - TODO: add linked pets to access. 
+- added ```POST :: /pet-detail``` route.
+    - TODO: verify if user retrieving this has acces to view pet details
+    - TODO: add photo to the list. i was thinking of not adding the photo to this as the FE people will need to manage on storing it on their end.
+    -should I add the records as well?
+- so requests will look like:
+    - PUT account/update/{id}
+    - DELETE account/delete/{id}
+- delete uses the DELETE method (route looks like account/update/{id}), update uses the UPDATE method (route looks like account/delete/{id})
+
+## October 25
+### Auth
+- Added email verification. After user registers, an email is sent with the link. If you don't like how the email and the user confirmation page looks, contact me.
+- Remember Me already exists, just pass the 
+```json
+    "remember":true 
+```
+parameter to generate a Remember Me token.
+- Added resend verification route. 
+``` /email/verification-notification```
+
+#### Mobile
+- Uses the same route as web.

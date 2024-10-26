@@ -146,7 +146,8 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        Features::emailVerification(),
+        // Need to use my own since this does not work for API stuff.
+        // Features::emailVerification(),
 //        Features::updateProfileInformation(),
 //        Features::updatePasswords(),
 //        Features::twoFactorAuthentication([

@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\User;
+
 
 // my custom controllers
-use App\Http\Controllers\UserMobileController;
+use App\Http\Controllers\Auth\UserMobileController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetController;
 use Laravel\Fortify\RoutePath;
@@ -22,6 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::post('/email/verification-notification', [EmailVerificationController::class,'resendNotification'])
+        ->name('verification.send');
 });
 
 // i'll take care of security once I finish the crud. 
@@ -29,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::prefix('account')->middleware('auth:sanctum')->group(function () {
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
-
+    
 });
 
 // also, i'll need to do a web version of this coz I need to know how to protect this.
@@ -45,3 +48,5 @@ Route::prefix('pet')->group(function () {
    Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
 
 });
+
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )->middleware(['signed'])->name('verification.verify');
