@@ -48,8 +48,8 @@
     "remember":true 
 ```
 parameter to generate a Remember Me token.
-- Added resend verification route. 
+- Added resend verification route. user must be authenticated to access this route.
 ``` /email/verification-notification```
-
+- Changed session driver to file to reduce database bloat. Sessions are stored in file with encryption.
 #### Mobile
 - Uses the same route as web.
