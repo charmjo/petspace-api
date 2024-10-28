@@ -42,4 +42,5 @@ Route::prefix('web/pet')->middleware('auth:sanctum')->group(function () {
  
  });
 
- Route::get('api/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )->middleware(['signed'])->name('verification.verify-web');
+//WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
+ //Route::get('api/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )->middleware(['signed'])->name('verification.verify-web');
