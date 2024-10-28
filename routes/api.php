@@ -20,23 +20,27 @@ Route::post('/get-token', [UserMobileController::class,'generateToken']);
 
 // protected route
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::post('/email/verification-notification', [EmailVerificationController::class,'resendNotification'])
-        ->name('verification.send');
+    //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
+    // Route::post('/email/verification-notification', [EmailVerificationController::class,'resendNotification'])
+    //     ->name('verification.send');
 });
 
 // i'll take care of security once I finish the crud. 
 // also, i'll need to do a web version of this coz I need to know how to protect this.
-Route::prefix('mobile/account')->middleware('auth:sanctum')->group(function () {
+Route::prefix('account')->middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
-    Route::get('/member-list/{id}', [UserController::class, 'updateUser']);
+    
+    // member list 
+    Route::get('/member-list', [UserController::class, 'getAllMembers']);
 });
 
 // also, i'll need to do a web version of this coz I need to know how to protect this.
-Route::prefix('/pet')->middleware('auth:sanctum')->group(function () {
+Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
    Route::post('/create', [PetController::class, 'create']);
    Route::delete('/delete/{id}', [PetController::class, 'delete']);
    Route::put('/update/{id}', [PetController::class, 'update']);
