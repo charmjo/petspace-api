@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::prefix('mobile/account')->middleware('auth:sanctum')->group(function () {
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
-    
+    Route::get('/member-list/{id}', [UserController::class, 'updateUser']);
 });
 
 // also, i'll need to do a web version of this coz I need to know how to protect this.
@@ -48,4 +48,7 @@ Route::prefix('/pet')->middleware('auth:sanctum')->group(function () {
 
 });
 
-Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )->middleware(['signed'])->name('verification.verify');
+//WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
+// Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
+//     ->middleware(['signed'])
+//     ->name('verification.verify');
