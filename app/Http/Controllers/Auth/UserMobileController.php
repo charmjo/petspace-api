@@ -1,13 +1,15 @@
 <?php
 // I will not put a guard on this. I would like use passport for API tokens but I am a noob so this will have to do.
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 // Fortify Validation and storage
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Fortify\Contracts\RegisterResponse;
+
 
 // token auth
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +27,7 @@ class UserMobileController extends Controller
     public function createUser(Request $request,
         CreatesNewUsers $creator) 
     {
+        // so, I need to return the validations here coz it is sure as hell not returning it.
         // anyways, createnewuser is just an impelementation of createsnewusers and is not beholden to anything so this should be fine???
         event(new Registered($user = $creator->create($request->all())));
         
@@ -34,6 +37,7 @@ class UserMobileController extends Controller
         ]);
     }
 
+    // make sure validation is on another class
     public function generateToken (Request $request) {
         $request->validate([
             'email' => 'required|email',
