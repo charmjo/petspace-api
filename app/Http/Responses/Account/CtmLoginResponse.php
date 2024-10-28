@@ -13,10 +13,7 @@ class CtmLoginResponse implements LoginResponse {
         $userDetail = Auth::user();
             return response()->json(
             ['two_factor' => false,
-                'user' => [
-                'name'=> $userDetail->name,
-                'email'=> $userDetail->email
-                ]
+                'data' => $userDetail
             ]
         );
     }
