@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Pet\CreateNewPetRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Pet;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Pet\PetCollection;
 
 class PetController extends Controller
 {
@@ -15,13 +17,17 @@ class PetController extends Controller
         Log::debug('create pet request here: ');
         Log::debug($request);
 
-        Pet::create($request->validated());
+        $petOwnerId = $request->user()->id;
+
+        Pet::create(array_merge($request->validated(), ['pet_owner_id' => $petOwnerId]));
     }
 
     public function delete ($id) {
         Log::debug('delete pet here');
 
         $pet = Pet::find($id);
+
+        //TODO: check if the auth user matches the owner ID.
 
         // delete the pet,
         $pet->delete();
@@ -33,29 +39,31 @@ class PetController extends Controller
     public function update (CreateNewPetRequest $request, $id) {
         Log::debug('update user here');
 
-        // find user by id
-        $user = Pet::find($id);
+        // find pet by id
+        $pet = Pet::find($id);
 
-        Log::debug($user);
+        //TODO: check if the auth user matches the owner ID.
+
+        Log::debug($pet);
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $user->update($request);
+        $pet->update($request);
 
-        // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
+        //TODO: add success
+        return new PetCollection($pet); 
     }
 
     public function getDetail ($id) {
-        Log::debug('update user here');
 
-        // find user by id
+        // find pet by id
         $pet = Pet::find($id);
+
+        //TODO: check if the auth user matches the owner ID.
 
         
         if($pet != null) {
-            return response()->json(
-                ['data'=> $pet->toArray()]
-            );
+            return new PetCollection($pet);
         }
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
     }
@@ -67,8 +75,8 @@ class PetController extends Controller
         // get id
         Log::debug($request);
 
-        $id = $request->input('user_id');
-
+        //$id = $request->input('user_id');
+        $id = Auth::id();
         //TODO: will need to add linked pets if id is linked to another account to view pet data. kani, I still have to think how to write this logic...
 
         // find user by id
@@ -79,9 +87,7 @@ class PetController extends Controller
 
         
         if($pets != null) {
-            return response()->json(
-                ['data'=> $pets->toArray()]
-            );
+            return new PetCollection($pets);
         }
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
     }
