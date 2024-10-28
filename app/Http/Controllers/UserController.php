@@ -33,8 +33,19 @@ class UserController extends Controller
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
         $data = $request->except('password','id');
-        $user->update($data);
 
+        try {
+            $user->update($data);
+
+            $userDetail = User::find($id);
+
+            return response()->json([
+                    'data' => $userDetail
+                ],200);
+
+        } catch (QueryException $e) {
+            return response()->json(['message' => 'Failed to insert family member.'], 500);
+        }
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
     }
 
