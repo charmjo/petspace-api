@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -38,13 +39,12 @@ class UserController extends Controller
             $user->update($data);
 
             $userDetail = User::find($id);
-
             return response()->json([
                     'data' => $userDetail
                 ],200);
 
         } catch (QueryException $e) {
-            return response()->json(['message' => 'Failed to insert family member.'], 500);
+            return response()->json(['message' => 'Failed to update data.'], 500);
         }
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
     }
@@ -57,7 +57,7 @@ class UserController extends Controller
 
         // get and validate email
         // Define validation rules
-        $validator = Validator::make($memberEmail = $request->input('email'), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
         ], [
             'email.required' => 'The email field is required.',
@@ -71,7 +71,7 @@ class UserController extends Controller
 
         // find email id, I didn't use pluck because I want it to be as near to the raw SQL but with protections
         $memberId = User::select('id')
-            ->where('email', $memberEmail)
+            ->where('email', $validator->validated()['email'])
             ->first();
     
         if ($memberId === null) {
@@ -84,25 +84,32 @@ class UserController extends Controller
         // Data to be inserted
         $data = [
             'main_user_id' => $id,
-            'family_member_id' => $memberId,
+            'family_member_id' => $memberId->id,
         ];
 
         // Inserting data into the 'users' table
         try {
             // Attempt to insert the data into the database
             DB::table('user_family')->insert($data);
+
+            // will return the list of the updated data. I will only do transactions if there are multiple inserts
+            $results = User::getAllFamilyMembers($id);
+            return response()->json([
+                'message'=>'Family member added successfully.',
+                'data'=>$results
+            ],200);
         } catch (QueryException $e) {
             // Handle the error if the insert fails
-            return response()->json(['message' => 'Failed to insert family member.'], 500);
+            return response()->json(['message' => 'Failed to add family member.'], 500);
         }
 
         // TODO: notify member 
         // TODO: member list
     }
 
-    public function removeMember ($id) {
+    public function removeMember ($toDeleteId) {
         $userToDelete= DB::table('user_family')
-            ->where('id', $id)
+            ->where('id', $toDeleteId)
             ->first();
 
         if ($userToDelete === null) {
@@ -115,13 +122,19 @@ class UserController extends Controller
         $authUserId = Auth::id();
 
         // compare if authenticated user is parent id.
-        if ($authUserId !== $userToDelete["main_user_id"]) {
+        if ($authUserId !== $userToDelete->main_user_id) {
             return response()->json(['message' => 'Not allowed'], 401);
         }
 
         try {
-            DB::table('user_family')->where('id', 1)->delete();
-            return response()->json(['message' => 'User deleted successfully.'], 200);
+            DB::table('user_family')->where('id', $toDeleteId)->delete();
+
+            // will return the list of the updated data. I will only do transactions if there are multiple inserts
+            $results = User::getAllFamilyMembers($authUserId);
+            return response()->json([
+                'message'=>'Family member removed successfully.',
+                'data'=>$results
+            ],200);
         } catch (QueryException $e) {
             return response()->json(['error' => 'Could not delete user.'], 500);
         }
@@ -135,11 +148,9 @@ class UserController extends Controller
         $authUserId = Auth::id();
 
         // return all added members
-        $results = DB::table('users')
-            ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-            ->select('users.id as user_id', 'users.name as user_name', 'posts.title as post_title', 'posts.created_at as post_created_at')
-            ->where('users.active', 1) // Only get active users
-            ->get();
+        $results = User::getAllFamilyMembers($authUserId);
+
+        return response()->json(['data'=>$results],200);
     }
 
 }

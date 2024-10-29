@@ -26,7 +26,11 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::prefix('web/account')->middleware('auth:sanctum')->group(function () {
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
-    
+
+    // member management
+    Route::get('/member-list', [UserController::class, 'getAllMembers']);
+    Route::post('/member/add', [UserController::class, 'addMember']);
+    Route::delete('/member/delete/{id}', [UserController::class, 'removeMember']);
 });
 
 // pet management
