@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
             'last_name' => ['string', 'max:255'],
             'email' => ['string', 'max:255','unique'],
             'role' => ['string', 'max:255'],
-            'dob' => ['numeric'], // make sure it is in the format yyyymmdd 
+            'dob' => ['date'], // make sure it is in the format yyyymmdd 
             'gender' => ['string'],
             'is_form_filled' => ['boolean']
         ];
