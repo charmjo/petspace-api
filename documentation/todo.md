@@ -2,11 +2,11 @@
 
 ## Development
 ### Mobile
-- [ ] Make sanctum token expire
+- [x] Make sanctum token expire
 
 
 ### Web
-- [ ] Add web routes
+- [x] Add web routes
 
 
 ### Models
@@ -17,8 +17,8 @@
 
 ## Features
 - [ ] Make remember password expire
-- [ ] Add family members
-- [ ] Remove family members
+- [x] Add family members
+- [x] Remove family members
 
 ### Other db stuff
 - [ ] start ERD so I can start creating the ORM schema
