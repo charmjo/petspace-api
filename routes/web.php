@@ -7,9 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetController;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::middleware('auth:web')->get('/users', function () {
     return User::all();
@@ -35,10 +35,8 @@ Route::prefix('web/pet')->middleware('auth:sanctum')->group(function () {
     Route::post('/create', [PetController::class, 'create']);
     Route::delete('/delete/{id}', [PetController::class, 'delete']);
     Route::put('/update/{id}', [PetController::class, 'update']);
- 
-    Route::get('/pet-detail');
-    Route::post('/pet-list', [PetController::class,'getList']);
- 
+
+    Route::get('/pet-list', [PetController::class,'getList']);
     Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
  });
 
