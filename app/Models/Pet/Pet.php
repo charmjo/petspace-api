@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pet;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pet extends Model
 {
@@ -20,4 +22,9 @@ class Pet extends Model
         'color',
         'gender',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'pet_owner_id');
+    }
 }

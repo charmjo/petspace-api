@@ -28,10 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // i'll take care of security once I finish the crud. 
 // also, i'll need to do a web version of this coz I need to know how to protect this.
 Route::prefix('account')->middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
+    Route::get('/user', [UserController::class, 'getUser']);
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
     
@@ -42,7 +39,7 @@ Route::prefix('account')->middleware('auth:sanctum')->group(function () {
 });
 
 // also, i'll need to do a web version of this coz I need to know how to protect this.
-Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
+Route::prefix('pets')->middleware('auth:sanctum')->group(function () {
    Route::post('/create', [PetController::class, 'create']);
    Route::delete('/delete/{id}', [PetController::class, 'delete']);
    Route::put('/update/{id}', [PetController::class, 'update']);

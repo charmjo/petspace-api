@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('role')->nullable();
             $table->string('dob')->nullable();
             $table->string('gender')->nullable(); // I'd rather have the front end deal with this
+            $table->string('phone')->nullable();
             $table->string('is_form_filled')->nullable();
             $table->string('password');
             $table->rememberToken();

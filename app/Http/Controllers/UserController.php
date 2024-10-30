@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Account\UpdateUserRequest;
+use App\Http\Resources\Account\UserResource;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,17 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function getUser (Request $request) {
+        // TODO: place this in a controller this is so unholy.
+        $authUserId = Auth::id();
+        $userDetail = User::with('address')
+                            -> withCount('pets')
+                            ->findOrFail($authUserId);
+
+        return response()->json([
+            'data' => new UserResource($userDetail),
+        ],200);
+    }
     // I want to perform soft deletion just to keep the data for stats or to prevent doing something irreversible at the expense of the db.
     public function deleteUser ($id) {
         // TODO: add authenticated user check
@@ -29,21 +41,32 @@ class UserController extends Controller
 
     public function updateUser (UpdateUserRequest $request, $id) {
         // find user by id
-        $user = User::find($id);
+        $authUserId = Auth::id();
+        $user = User::find($authUserId);
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $data = $request->except('password','id');
+        $data = $request->except('password','id','address');
 
+        $addressInput = $request->input('address');
+
+        Log::debug($addressInput);
         try {
             $user->update($data);
+            $user->address()->updateOrCreate(
+                ['user_id' => $user->id],
+                $addressInput
+            );
 
-            $userDetail = User::find($id);
-            return response()->json([
-                    'data' => $userDetail
-                ],200);
+            $userDetail = User::with('address')
+                ->withCount('pets')
+                ->findOrFail($authUserId);
+            
+            Log::debug($userDetail);
 
+            return new UserResource($userDetail);
         } catch (QueryException $e) {
+            Log::debug($e);
             return response()->json(['message' => 'Failed to update data.'], 500);
         }
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
@@ -68,6 +91,8 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
+        // TODO: restrict count to 10 items.
 
         // find email id, I didn't use pluck because I want it to be as near to the raw SQL but with protections
         $memberId = User::select('id')

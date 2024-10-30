@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pet\CreateNewPetRequest;
 use Illuminate\Support\Facades\Log;
-use App\Models\Pet;
+use App\Models\Pet\Pet;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Pet\PetCollection;
 
 class PetController extends Controller
 {
     //
-
     public function create (CreateNewPetRequest $request) {
         Log::debug('create pet request here: ');
         Log::debug($request);
