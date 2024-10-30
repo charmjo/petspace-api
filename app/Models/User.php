@@ -4,13 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Account\Address;
+use App\Models\Pet\Pet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable 
@@ -33,6 +35,7 @@ class User extends Authenticatable
         'gender',
         'password',
         'is_form_filled',
+        'phone'
     ];
 
     /**
@@ -56,6 +59,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function address(): HasOne 
+    {
+        return $this->hasOne(Address::class);
+    }
+
+    public function pets(): HasMany 
+    {
+        return $this->hasMany(Pet::class,'pet_owner_id');
+    }
+
+    public function loadWithOtherModels () {
+        $this->load('address')
+            ->setRelation(
+                'pets_count', 
+                $this->pets()->count()
+            );
     }
 
     // get family members using linking table

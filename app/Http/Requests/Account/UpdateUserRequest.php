@@ -28,7 +28,13 @@ class UpdateUserRequest extends FormRequest
             'role' => ['string', 'max:255'],
             'dob' => ['date'], // make sure it is in the format yyyymmdd 
             'gender' => ['string'],
-            'is_form_filled' => ['boolean']
+            'phone' => ['string'],
+            'address.street_name' => ['required','string','max:255'],
+            'address.city' => ['required','string','max:255'],
+            'address.province' => ['required','string','max:255'],
+            'address.country' => ['required','string','max:255'],
+            'address.postal_code' => ['required','string','max:255'],
+            'is_form_filled' => ['boolean'],
         ];
     }
 }

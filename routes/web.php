@@ -16,14 +16,10 @@ Route::middleware('auth:web')->get('/users', function () {
 });
 
 // protected route
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('api/user', function (Request $request) {
-        return $request->user();
-    });
-});
 
 // account management
 Route::prefix('web/account')->middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [UserController::class, 'getUser']);
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
 
@@ -34,6 +30,7 @@ Route::prefix('web/account')->middleware('auth:sanctum')->group(function () {
 });
 
 // pet management
+// These routes here are meant to be used in the browser when people visit your page
 Route::prefix('web/pet')->middleware('auth:sanctum')->group(function () {
     Route::post('/create', [PetController::class, 'create']);
     Route::delete('/delete/{id}', [PetController::class, 'delete']);
@@ -43,7 +40,6 @@ Route::prefix('web/pet')->middleware('auth:sanctum')->group(function () {
     Route::post('/pet-list', [PetController::class,'getList']);
  
     Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
- 
  });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
