@@ -35,14 +35,28 @@ Response Json
 }
 ```
 ## 3. POST : pet/update
+**Request Parameters**
+| Field   | Value          |
+|---------|----------------|
+| pet_owner_id      | 2              |
+| breed    | border collie          |
+| animal_type   | dog  |
+| dob     | 2022/06/28     |
+| gender  | male           |
+| type    | dog            |
+| color   | white          |
+| name   | fluffy          |
+
 Response JSON
 ```json
 {
-    "id": 2,
-    "name": "dookie",
-    "breed": "dog",
-    "dob": "July 01, 2020",
-    "gender": "female"
+    "id": 1,
+    "name": "Doggo",
+    "breed": "border collie",
+    "dob": "2022/06/28",
+    "gender": "male",
+    "animal_type": "dog",
+    "color": "white"
 }
 ```
 ## 3. DELETE : pet/delete/{id}
@@ -54,11 +68,13 @@ Response JSON
 ## 4. GET : pet/pet-detail/{id}
 ```json
 {
-    "id": 2,
-    "name": "Meatball",
-    "breed": "dog",
+    "id": 1,
+    "name": "Doggo",
+    "breed": "border collie",
     "dob": "2022/06/28",
-    "gender": "male"
+    "gender": "male",
+    "animal_type": "dog",
+    "color": "white"
 }
 ```
 

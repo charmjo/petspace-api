@@ -17,9 +17,11 @@ class PetResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'breed' => $this->animal_type,
+            'breed' => $this->breed,
             'dob' => $this->dob,
             'gender' => $this->gender,
+            'animal_type' => $this->animal_type,
+            'color' => $this->color,
         ];
     }
 }

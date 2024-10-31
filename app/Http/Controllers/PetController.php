@@ -83,7 +83,7 @@ class PetController extends Controller
 
         // find user by id
         // will all picture here in the near future...
-        $pets = Pet::select('id', 'name', 'breed')
+        $pets = Pet::select('id', 'name', 'breed','animal_type')
             ->where('pet_owner_id',$id)
             ->get();
 
