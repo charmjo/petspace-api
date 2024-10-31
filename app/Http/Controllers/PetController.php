@@ -37,9 +37,10 @@ class PetController extends Controller
         return response()->json(["message"=>"Pet removed successfully"],200);
     }
 
-    public function update (CreateNewPetRequest $request, $id) {
+    public function update (CreateNewPetRequest $request) {
         // find pet by id
-        $pet = Pet::find($id);
+        $petId = $request->input("id");
+        $pet = Pet::find($petId);
 
         //TODO: check if the auth user matches the owner ID.
 
@@ -47,7 +48,7 @@ class PetController extends Controller
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $pet->update($request->validated());
+        $pet->update($request->validated()->except("id"));
 
         //TODO: add success
         return response()->json(new PetResource($pet),200);

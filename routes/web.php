@@ -21,7 +21,7 @@ Route::middleware('auth:web')->get('/users', function () {
 Route::prefix('web/account')->middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'getUser']);
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
-    Route::put('/update/{id}', [UserController::class, 'updateUser']);
+    Route::post('/update', [UserController::class, 'updateUser']);
 
     // member management
     Route::get('/member-list', [UserController::class, 'getAllMembers']);
@@ -34,7 +34,7 @@ Route::prefix('web/account')->middleware('auth:sanctum')->group(function () {
 Route::prefix('web/pet')->middleware('auth:sanctum')->group(function () {
     Route::post('/create', [PetController::class, 'create']);
     Route::delete('/delete/{id}', [PetController::class, 'delete']);
-    Route::put('/update/{id}', [PetController::class, 'update']);
+    Route::post('/update', [PetController::class, 'update']);
 
     Route::get('/pet-list', [PetController::class,'getList']);
     Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
