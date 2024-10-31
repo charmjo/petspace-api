@@ -34,18 +34,7 @@ Response Json
     "message": "Pet added successfully"
 }
 ```
-## 3. PUT : pet/update
-Request JSON
-```json
-{
-    "name": "dookie",
-    "breed": "chihuahua",
-    "animal_type": "dog",
-    "dob": "July 01, 2020",
-    "color": "black",
-    "gender": "female"
-}
-```
+## 3. POST : pet/update
 Response JSON
 ```json
 {
