@@ -14,16 +14,16 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function getUser (Request $request) {
+    public function  getUser (Request $request): \Illuminate\Http\JsonResponse
+    {
         // TODO: place this in a controller this is so unholy.
         $authUserId = Auth::id();
         $userDetail = User::with('address')
                             -> withCount('pets')
                             ->findOrFail($authUserId);
 
-        return response()->json([
-            'data' => new UserResource($userDetail),
-        ],200);
+        return response()->json(new UserResource($userDetail),
+        200);
     }
     // I want to perform soft deletion just to keep the data for stats or to prevent doing something irreversible at the expense of the db.
     public function deleteUser ($id) {
@@ -39,7 +39,7 @@ class UserController extends Controller
         // return response of deleted user, frontend will deal with frontend things.
     }
 
-    public function updateUser (UpdateUserRequest $request, $id) {
+   public function updateUser (UpdateUserRequest $request, $id) {
         // find user by id
         $authUserId = Auth::id();
         $user = User::find($authUserId);
@@ -61,10 +61,9 @@ class UserController extends Controller
             $userDetail = User::with('address')
                 ->withCount('pets')
                 ->findOrFail($authUserId);
-            
-            Log::debug($userDetail);
 
-            return new UserResource($userDetail);
+            return response()->json(new UserResource($userDetail),
+                200);
         } catch (QueryException $e) {
             Log::debug($e);
             return response()->json(['message' => 'Failed to update data.'], 500);
@@ -98,14 +97,13 @@ class UserController extends Controller
         $memberId = User::select('id')
             ->where('email', $validator->validated()['email'])
             ->first();
-    
+
         if ($memberId === null) {
-            
             // add return message if email is not found
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        // add member if found 
+        // add member if found
         // Data to be inserted
         $data = [
             'main_user_id' => $id,
@@ -121,14 +119,14 @@ class UserController extends Controller
             $results = User::getAllFamilyMembers($id);
             return response()->json([
                 'message'=>'Family member added successfully.',
-                'data'=>$results
+                'list'=>$results
             ],200);
         } catch (QueryException $e) {
             // Handle the error if the insert fails
             return response()->json(['message' => 'Failed to add family member.'], 500);
         }
 
-        // TODO: notify member 
+        // TODO: notify member
         // TODO: member list
     }
 
@@ -138,7 +136,6 @@ class UserController extends Controller
             ->first();
 
         if ($userToDelete === null) {
-        
             // add return message if email is not found
             return response()->json(['message' => 'User not found'], 404);
         }
@@ -158,16 +155,15 @@ class UserController extends Controller
             $results = User::getAllFamilyMembers($authUserId);
             return response()->json([
                 'message'=>'Family member removed successfully.',
-                'data'=>$results
+                'list'=>$results
             ],200);
         } catch (QueryException $e) {
-            return response()->json(['error' => 'Could not delete user.'], 500);
+            return response()->json(['error' => 'Family member could not be deleted.'], 500);
         }
         //TODO: notify removed member
         //TODO: return member list
     }
 
-    // TODO:transfer to model
     public function getAllMembers () {
         // get authenticated user
         $authUserId = Auth::id();
@@ -175,7 +171,11 @@ class UserController extends Controller
         // return all added members
         $results = User::getAllFamilyMembers($authUserId);
 
-        return response()->json(['data'=>$results],200);
+        return response()->json(["list"=>$results],200);
+    }
+
+    public function changeAvatar (Request $request) {
+        dd($request);
     }
 
 }

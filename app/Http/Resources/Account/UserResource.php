@@ -2,9 +2,14 @@
 
 namespace App\Http\Resources\Account;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $first_name
+ * @property mixed $id
+ */
 class UserResource extends JsonResource
 {
     /**
@@ -18,10 +23,9 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'role' => $this->first_name,
-            'dob' => $this->first_name,
-            'gender' => $this->first_name,
-            'password' => $this->first_name,
+            'role' => $this->role,
+            'dob' => $this->dob,
+            'gender' => $this->gender,
             'email' => $this->email,
             'phone' => $this->phone,
             'pets_count' => $this->pets_count,

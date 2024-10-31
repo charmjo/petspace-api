@@ -7,7 +7,7 @@ use App\Http\Requests\Pet\CreateNewPetRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Pet\Pet;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\Pet\PetCollection;
+use App\Http\Resources\Pet\PetResource;
 
 class PetController extends Controller
 {
@@ -19,6 +19,7 @@ class PetController extends Controller
         $petOwnerId = $request->user()->id;
 
         Pet::create(array_merge($request->validated(), ['pet_owner_id' => $petOwnerId]));
+        return response()->json(["message"=>"Pet added successfully"],201);
     }
 
     public function delete ($id) {
@@ -33,6 +34,7 @@ class PetController extends Controller
 
         // return response of deleted user, frontend will deal with frontend things.
         Log::debug('pet deleted');
+        return response()->json(["message"=>"Pet removed successfully"],200);
     }
 
     public function update (CreateNewPetRequest $request, $id) {
@@ -50,7 +52,7 @@ class PetController extends Controller
         $pet->update($request);
 
         //TODO: add success
-        return new PetCollection($pet); 
+        return response()->json($pet,200);
     }
 
     public function getDetail ($id) {
@@ -60,11 +62,13 @@ class PetController extends Controller
 
         //TODO: check if the auth user matches the owner ID.
 
-        
-        if($pet != null) {
-            return new PetCollection($pet);
+
+        if($pet === null) {
+            return response()->json(["error"=>"Pet not found"],404);
         }
+
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
+        return response()->json(new PetResource($pet),200);
     }
 
     // will need to put this, will need user id. The user ID can be derived from this list
@@ -84,11 +88,11 @@ class PetController extends Controller
             ->where('pet_owner_id',$id)
             ->get();
 
-        
-        if($pets != null) {
-            return new PetCollection($pets);
-        }
-        // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.
+        return response()->json(
+            [
+            "pets_owned"=>$pets,
+            "linked_pets"=>[]
+        ],200);
     }
 
 
