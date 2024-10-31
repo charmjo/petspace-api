@@ -50,7 +50,8 @@ class UserController extends Controller
         $data = $request->except('id','password','email');
 
         $userData = [
-            "first_name" => data_get($data,'address_street_name') ? : null,
+            "first_name" => data_get($data,'first_name') ? : null,
+            "last_name" => data_get($data,'last_name') ? : null,
             "phone" => data_get($data,'phone') ? : null,
             "role" => data_get($data,'role') ? : null,
         ];
