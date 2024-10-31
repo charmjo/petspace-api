@@ -38,8 +38,6 @@ class PetController extends Controller
     }
 
     public function update (CreateNewPetRequest $request, $id) {
-        Log::debug('update user here');
-
         // find pet by id
         $pet = Pet::find($id);
 
@@ -49,10 +47,10 @@ class PetController extends Controller
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $pet->update($request);
+        $pet->update($request->validated());
 
         //TODO: add success
-        return response()->json($pet,200);
+        return response()->json(new PetResource($pet),200);
     }
 
     public function getDetail ($id) {
