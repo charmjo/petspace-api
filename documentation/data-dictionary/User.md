@@ -18,7 +18,7 @@ Response Json
 }
 ```
 
-## 2. PUT : account/update
+## 2. POST : account/update
 Response Json
 ```json
 {

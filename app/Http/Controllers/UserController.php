@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Http\Request;
 use App\Http\Requests\Account\UpdateUserRequest;
 use App\Http\Resources\Account\UserResource;
@@ -39,7 +40,8 @@ class UserController extends Controller
         // return response of deleted user, frontend will deal with frontend things.
     }
 
-   public function updateUser (UpdateUserRequest $request, $id) {
+   public function updateUser (UpdateUserRequest $request) {
+  
         // find user by id
         $authUserId = Auth::id();
         $user = User::find($authUserId);

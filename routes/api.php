@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::prefix('account')->middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'getUser']);
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
-    Route::put('/update/{id}', [UserController::class, 'updateUser']);
+    Route::post('/update', [UserController::class, 'updateUser']);
     Route::post('/change-avatar', [UserController::class, 'changeAvatar']);
 
     // member management
@@ -43,7 +43,7 @@ Route::prefix('account')->middleware('auth:sanctum')->group(function () {
 Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
    Route::post('/create', [PetController::class, 'create']);
    Route::delete('/delete/{id}', [PetController::class, 'delete']);
-   Route::put('/update/{id}', [PetController::class, 'update']);
+   Route::post('/update', [PetController::class, 'update']);
 
    Route::get('/pet-list', [PetController::class,'getList']);
 
