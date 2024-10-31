@@ -171,7 +171,7 @@ class UserController extends Controller
         // return all added members
         $results = User::getAllFamilyMembers($authUserId);
 
-        return response()->json(["list"=>$results],200);
+        return response()->json([ "list"=>$results],200);
     }
 
     public function changeAvatar (Request $request) {

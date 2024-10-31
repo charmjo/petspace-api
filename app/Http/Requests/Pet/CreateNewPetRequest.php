@@ -24,13 +24,12 @@ class CreateNewPetRequest extends FormRequest
         // I am using Date datatype for sql for data analytics
         return [
             //
-           'pet_owner_id' => ['required','integer','exists:users,id'],
+//           'pet_owner_id' => ['required','integer','exists:users,id'],
             'name' => ['required','string'],
             'breed' => ['required','string'],
             'animal_type' => ['required','string'],
             'dob' => ['required','date'],
             'color' => ['required','string'],
-            'pet_owner_id' => ['string','integer'],
             'gender' => ['required','string'],
         ];
     }
