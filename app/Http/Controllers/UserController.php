@@ -41,23 +41,36 @@ class UserController extends Controller
     }
 
    public function updateUser (UpdateUserRequest $request) {
-  
         // find user by id
         $authUserId = Auth::id();
         $user = User::find($authUserId);
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $data = $request->except('password','id','address');
+        $data = $request->except('id','password','email');
 
-        $addressInput = $request->input('address');
+        $userData = [
+            "first_name" => data_get($data,'address_street_name') ? : null,
+            "phone" => data_get($data,'phone') ? : null,
+            "role" => data_get($data,'role') ? : null,
+        ];
 
-        Log::debug($addressInput);
+        $addressData = [
+            "street_name" => data_get($data,'address_street_name') ? : null,
+            "postal_code" => data_get($data,'address_postal_code') ? : null ,
+            "country" => data_get($data,'address_country') ? : null,
+            "province" => data_get($data,'address_province') ? : null,
+            "city" => data_get($data,'address_city') ? : null,
+        ];
+
+        $request->input('address');
+
+        Log::debug($addressData);
         try {
-            $user->update($data);
+            $user->update($userData);
             $user->address()->updateOrCreate(
                 ['user_id' => $user->id],
-                $addressInput
+                $addressData
             );
 
             $userDetail = User::with('address')
