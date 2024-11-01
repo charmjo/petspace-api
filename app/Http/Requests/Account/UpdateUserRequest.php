@@ -22,13 +22,13 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['string', 'max:255'],
-            'last_name' => ['string', 'max:255'],
-            'email' => ['string', 'max:255','unique'],
+            'first_name' => ['required','string', 'max:255'],
+            'last_name' => ['required','string', 'max:255'],
+            'email' => ['required','string', 'max:255','unique'],
             'role' => ['string', 'max:255'],
             'dob' => ['date'], // make sure it is in the format yyyymmdd 
             'gender' => ['string'],
-            'phone' => ['string'],
+            'phone' => ['required','string'],
             'address_street_name' => ['required','string','max:255'],
             'address_city' => ['required','string','max:255'],
             'address_province' => ['required','string','max:255'],
