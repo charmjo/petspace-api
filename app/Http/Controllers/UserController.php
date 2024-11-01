@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    const MEMBER_LIMIT = 10;
     public function  getUser (Request $request): \Illuminate\Http\JsonResponse
     {
         // TODO: place this in a controller this is so unholy.
@@ -47,7 +48,7 @@ class UserController extends Controller
         $authUserId = Auth::id();
         $user = User::find($authUserId);
 
-        // exclude some fields as I want another function to handle password change
+       // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
         $data = $request->except('id','password','email');
 
@@ -95,6 +96,15 @@ class UserController extends Controller
         // get authenticated userID
         $id = Auth::id();
 
+        // check if user already added 10 members
+        $memberCount = DB::table('user_family')
+            ->where('main_user_id',$id)
+            ->count();
+
+        if($memberCount >= self::MEMBER_LIMIT) {
+            return response()->json(['message' => 'Member limit already reached.'], 403);
+        }
+
         // get and validate email
         // Define validation rules
         $validator = Validator::make($request->all(), [
@@ -121,7 +131,17 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        // add member if found
+        // get existing data
+        $existingData = DB::table('user_family')
+            ->where('main_user_id',$id)
+            ->where('family_member_id', $memberId->id)
+            ->get();
+
+        // check if family member is already added
+        if ($existingData->containsOneItem()) {
+            return response()->json(['message' => 'Family member already exists'], 409);
+        }
+
         // Data to be inserted
         $data = [
             'main_user_id' => $id,
@@ -135,9 +155,10 @@ class UserController extends Controller
 
             // will return the list of the updated data. I will only do transactions if there are multiple inserts
             $results = User::getAllFamilyMembers($id);
+
             return response()->json([
                 'message'=>'Family member added successfully.',
-                'list'=>$results
+                'list'=> $results
             ],200);
         } catch (QueryException $e) {
             // Handle the error if the insert fails
@@ -193,11 +214,11 @@ class UserController extends Controller
     }
 
     public function changeAvatar (Request $request) {
-  
+
         // get user
         $authUserId = Auth::id();
         $user = User::find($authUserId);
-    
+
         // get file
         $imageFile = $request->file('image');
         $imageName = $imageFile->hashName();

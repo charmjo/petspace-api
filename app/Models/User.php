@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 // Commented as to be implemented later
 // implements MustVerifyEmail
 {
@@ -62,12 +64,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function address(): HasOne 
+    public function address(): HasOne
     {
         return $this->hasOne(Address::class);
     }
 
-    public function pets(): HasMany 
+    public function pets(): HasMany
     {
         return $this->hasMany(Pet::class,'pet_owner_id');
     }
@@ -75,23 +77,35 @@ class User extends Authenticatable
     public function loadWithOtherModels () {
         $this->load('address')
             ->setRelation(
-                'pets_count', 
+                'pets_count',
                 $this->pets()->count()
             );
     }
 
     // get family members using linking table
     // TODO: test this
-    public static function getAllFamilyMembers ($parentId) {
+    public static function getAllFamilyMembers ($parentId) : Collection {
 
         // return all added members
-        return DB::table('user_family as uf')
+        $results = DB::table('user_family as uf')
             ->leftJoin('users', 'uf.family_member_id', '=', 'users.id')
             ->select('uf.id'
-                , 'users.first_name'
-                , 'users.last_name'
-                , 'users.email')
+                , 'users.first_name as first_name'
+                , 'users.last_name as last_name'
+                , 'users.email as email'
+                ,'users.avatar_storage_path as profile_image')
             ->where('uf.main_user_id', $parentId) // Only get active users
             ->get();
+
+        // TODO: add the storage file conversion as a util. THIS DOES NOT NEED TO BE A CONTROLLER
+        $results = $results->map(function ($item) {
+            $pathToFile = $item->profile_image;
+            $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addHour(1)) : null;
+
+            $item->profile_image=$temporaryUrl;
+            return $item;
+        });
+
+        return $results;
     }
 }
