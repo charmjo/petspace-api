@@ -25,12 +25,13 @@ class CreateNewPetRequest extends FormRequest
         return [
             //
 //           'pet_owner_id' => ['required','integer','exists:users,id'],
-            'name' => ['required','string'],
-            'breed' => ['required','string'],
-            'animal_type' => ['required','string'],
+            'name' => ['required','string','max:255'],
+            'breed' => ['required','string','max:255'],
+            'animal_type' => ['required','string','max:255'],
             'dob' => ['required','date'],
-            'color' => ['required','string'],
-            'gender' => ['required','string'],
+            'color' => ['required','string','max:100'],
+            'gender' => ['required','string','max:100'],
+            'bio' => ['string','max:100']
         ];
     }
 }

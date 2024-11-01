@@ -48,16 +48,31 @@ class UserController extends Controller
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $data = $request->except('password','id','address');
+        $data = $request->except('id','password','email');
 
-        $addressInput = $request->input('address');
+        $userData = [
+            "first_name" => data_get($data,'first_name'),
+            "last_name" => data_get($data,'last_name'),
+            "phone" => data_get($data,'phone'),
+            "role" => data_get($data,'role'),
+        ];
 
-        Log::debug($addressInput);
+        $addressData = [
+            "street_name" => data_get($data,'address_street_name'),
+            "postal_code" => data_get($data,'address_postal_code'),
+            "country" => data_get($data,'address_country'),
+            "province" => data_get($data,'address_province'),
+            "city" => data_get($data,'address_city'),
+        ];
+
+        $request->input('address');
+
+        Log::debug();
         try {
             $user->update($data);
             $user->address()->updateOrCreate(
                 ['user_id' => $user->id],
-                $addressInput
+                $addressData
             );
 
             $userDetail = User::with('address')

@@ -115,3 +115,50 @@ Response Json
 }
 ```
 
+## other web routes:
+
+### 1. api/register
+Response JSON
+```json
+{
+    "two_factor": false,
+    "data": {
+        "id": 7,
+        "first_name": "Jane",
+        "last_name": "Doe 5",
+        "role": null,
+        "dob": null,
+        "gender": null,
+        "email": "jane5.doe@test.com",
+        "phone": null,
+        "pets_count": 0,
+        "is_form_filled": "0",
+        "address": null
+    }
+}
+```
+
+### 2. api/login
+Response JSON
+```json
+{
+    "two_factor": false,
+    "data": {
+        "id": 7,
+        "first_name": "Jane",
+        "last_name": "Doe 5",
+        "role": null,
+        "dob": null,
+        "gender": null,
+        "email": "jane5.doe@test.com",
+        "phone": null,
+        "pets_count": 0,
+        "is_form_filled": "0",
+        "address": null
+    }
+}
+```
+
+### 3. 
+
+

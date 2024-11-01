@@ -3,6 +3,7 @@
 namespace App\Models\Pet;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,7 @@ class Pet extends Model
         'dob',
         'color',
         'gender',
+        'bio'
     ];
 
     public function user(): BelongsTo

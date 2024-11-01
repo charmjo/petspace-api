@@ -1,4 +1,8 @@
 # Version Notes October 2024
+## October 31
+- Created JSON structure guide for endpoints
+- added bio table
+
 ## October 28
 ### Auth - Web
 - I know this seems useless to implement stateful authentication but i am still figuring out how to have the same prefixes for web and mobile. For now, I added ```web``` as a prefix for web requests as workaround to bypass csrf token mismatches for requests done on mobile.
