@@ -41,7 +41,6 @@ class UserController extends Controller
     }
 
    public function updateUser (UpdateUserRequest $request) {
-  
         // find user by id
         $authUserId = Auth::id();
         $user = User::find($authUserId);
@@ -67,9 +66,9 @@ class UserController extends Controller
 
         $request->input('address');
 
-        Log::debug();
+        Log::debug($addressData);
         try {
-            $user->update($data);
+            $user->update($userData);
             $user->address()->updateOrCreate(
                 ['user_id' => $user->id],
                 $addressData
