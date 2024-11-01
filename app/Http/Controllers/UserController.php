@@ -50,18 +50,18 @@ class UserController extends Controller
         $data = $request->except('id','password','email');
 
         $userData = [
-            "first_name" => data_get($data,'first_name') ? : null,
-            "last_name" => data_get($data,'last_name') ? : null,
-            "phone" => data_get($data,'phone') ? : null,
-            "role" => data_get($data,'role') ? : null,
+            "first_name" => data_get($data,'first_name'),
+            "last_name" => data_get($data,'last_name'),
+            "phone" => data_get($data,'phone'),
+            "role" => data_get($data,'role'),
         ];
 
         $addressData = [
-            "street_name" => data_get($data,'address_street_name') ? : null,
-            "postal_code" => data_get($data,'address_postal_code') ? : null ,
-            "country" => data_get($data,'address_country') ? : null,
-            "province" => data_get($data,'address_province') ? : null,
-            "city" => data_get($data,'address_city') ? : null,
+            "street_name" => data_get($data,'address_street_name'),
+            "postal_code" => data_get($data,'address_postal_code'),
+            "country" => data_get($data,'address_country'),
+            "province" => data_get($data,'address_province'),
+            "city" => data_get($data,'address_city'),
         ];
 
         $request->input('address');

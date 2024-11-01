@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('breed');
             $table->string('animal_type');
+            $table->string('bio')->nullable();
             $table->timestamp('dob')->nullable();
             $table->string('color')->nullable();
             $table->string('gender')->nullable(); // I'd rather have the front end deal with this
