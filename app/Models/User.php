@@ -35,7 +35,8 @@ class User extends Authenticatable
         'gender',
         'password',
         'is_form_filled',
-        'phone'
+        'phone',
+        'avatar_storage_path'
     ];
 
     /**

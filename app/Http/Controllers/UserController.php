@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Account\UpdateUserRequest;
 use App\Http\Resources\Account\UserResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -196,22 +197,26 @@ class UserController extends Controller
         // get user
         $authUserId = Auth::id();
         $user = User::find($authUserId);
+    
+        // get file
+        $imageFile = $request->file('image');
+        $imageName = $imageFile->hashName();
 
-        Log::debug($request->all());
-        //Log::debug($image);
-        // store image
-        $pathToFile = $authUserId.'account/profile.jpg';
-        Storage::disk('local')->putFileAs($pathToFile, $request->image, 'profile.jpg');
+        $directory = $authUserId.'/account/profile';
+        Log::debug($imageFile);
+        Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
+        $pathToFile = $directory."/".$imageName;
         $user->update(
             ["avatar_storage_path"=>$pathToFile]
         );
-        
-        $url= Storage::temporaryUrl('/account/profile.jpg',now()->addSeconds(600));
+
+        $url= Storage::temporaryUrl($pathToFile,now()->addHour(1));
 
 
         return response()->json([
-            'url' => $url,
+            'message' => "Image updated successfully",
+            'image_url' => $url,
         ]);
         // get the image
         // store the image in this path userID/account/profile/put-image-here.

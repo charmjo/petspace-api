@@ -56,6 +56,3 @@ Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
 //     ->middleware(['signed'])
 //     ->name('verification.verify');
 
-// Route::prefix('storage')->middleware('auth:sanctum')->group(function () {
-//     Route::get('/storage/account/*'); 
-//  });
