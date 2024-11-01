@@ -11,6 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -191,7 +192,32 @@ class UserController extends Controller
     }
 
     public function changeAvatar (Request $request) {
-        dd($request);
+  
+        // get user
+        $authUserId = Auth::id();
+        $user = User::find($authUserId);
+
+        Log::debug($request->all());
+        //Log::debug($image);
+        // store image
+        $pathToFile = $authUserId.'account/profile.jpg';
+        Storage::disk('local')->putFileAs($pathToFile, $request->image, 'profile.jpg');
+
+        $user->update(
+            ["avatar_storage_path"=>$pathToFile]
+        );
+        
+        $url= Storage::temporaryUrl('/account/profile.jpg',now()->addSeconds(600));
+
+
+        return response()->json([
+            'url' => $url,
+        ]);
+        // get the image
+        // store the image in this path userID/account/profile/put-image-here.
+        // create url path
+        // store the url path name in the db
+        //
     }
 
 }

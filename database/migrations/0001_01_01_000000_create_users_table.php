@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 return new class extends Migration
 {
     /**
@@ -22,6 +21,7 @@ return new class extends Migration
             $table->string('gender')->nullable(); // I'd rather have the front end deal with this
             $table->string('phone')->nullable();
             $table->string('is_form_filled')->nullable();
+            $table->string('avatar_storage_path')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

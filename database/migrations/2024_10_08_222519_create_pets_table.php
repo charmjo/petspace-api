@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('dob')->nullable();
             $table->string('color')->nullable();
             $table->string('gender')->nullable(); // I'd rather have the front end deal with this
+            $table->string('image_storage_path');
             $table->timestamps();
         });
 
