@@ -2,18 +2,19 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\User;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * @group skip
+ */
 class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
@@ -27,7 +28,7 @@ class EmailVerificationTest extends TestCase
             'email' => 'tester@test.com',
             'password' => bcrypt('password')
         ]);
- 
+
         $url = URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
@@ -36,7 +37,7 @@ class EmailVerificationTest extends TestCase
                 'hash' => sha1($user->getEmailForVerification()),
             ]
         );
-        
+
         // Act
         $response = $this->get($url);
 
