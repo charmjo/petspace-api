@@ -219,11 +219,16 @@ class UserController extends Controller
         $authUserId = Auth::id();
         $user = User::find($authUserId);
 
+        // delete existing file
+        if($user->avatar_storage_path !== null) {
+            Storage::delete($user->avatar_storage_path);
+        }
+
         // get file
         $imageFile = $request->file('image');
         $imageName = $imageFile->hashName();
 
-        $directory = $authUserId.'/account/profile';
+        $directory = $authUserId;
         Log::debug($imageFile);
         Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
@@ -239,11 +244,7 @@ class UserController extends Controller
             'message' => "Image updated successfully",
             'image_url' => $url,
         ]);
-        // get the image
-        // store the image in this path userID/account/profile/put-image-here.
-        // create url path
-        // store the url path name in the db
-        //
+
     }
 
 }

@@ -22,7 +22,8 @@ class Pet extends Model
         'dob',
         'color',
         'gender',
-        'bio'
+        'bio',
+        'image_storage_path'
     ];
 
     public function user(): BelongsTo

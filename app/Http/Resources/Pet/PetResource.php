@@ -4,6 +4,7 @@ namespace App\Http\Resources\Pet;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PetResource extends JsonResource
 {
@@ -14,6 +15,9 @@ class PetResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // set a temporary URL for images
+        $pathToFile = $this->image_storage_path;
+        $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addSeconds(600)) : null;
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -22,6 +26,7 @@ class PetResource extends JsonResource
             'gender' => $this->gender,
             'animal_type' => $this->animal_type,
             'color' => $this->color,
+            'pet_image' => $temporaryUrl
         ];
     }
 }
