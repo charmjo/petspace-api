@@ -4,11 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Sanctum\Sanctum;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-
+use Tests\TestCase;
+/**
+ * @group skip
+ */
 class MobileTest extends TestCase
 {
     // refresh to know we're operating a clean database

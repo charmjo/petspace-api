@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Pet\Pet;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Pet\PetResource;
+use Illuminate\Support\Facades\Storage;
 
 class PetController extends Controller
 {
@@ -72,20 +73,25 @@ class PetController extends Controller
 
     // will need to put this, will need user id. The user ID can be derived from this list
     public function getList (Request $request) {
-        Log::debug('get list here');
-
-        // get id
-        Log::debug($request);
-
-        //$id = $request->input('user_id');
         $id = Auth::id();
-        //TODO: will need to add linked pets if id is linked to another account to view pet data. kani, I still have to think how to write this logic...
+        //TODO: will need to add linked pets if id is linked to another account to view pet data. kani, I still have to think how to write this logic..
 
-        // find user by id
         // will all picture here in the near future...
-        $pets = Pet::select('id', 'name', 'breed','animal_type')
+        $pets = Pet::select('id'
+                , 'name'
+                , 'breed'
+                ,'animal_type'
+                ,'image_storage_path as pet_image')
             ->where('pet_owner_id',$id)
             ->get();
+
+        $pets = $pets->map(function ($item) {
+            $pathToFile = $item->pet_image;
+            $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addHour(1)) : null;
+
+            $item->pet_image=$temporaryUrl;
+            return $item;
+        });
 
         return response()->json(
             [
@@ -94,6 +100,49 @@ class PetController extends Controller
         ],200);
     }
 
+    public function changeAvatar (Request $request) {
+        // get pet id
+        $id = $request->input('pet_id');
+
+        // get logged user
+        $authUserId = Auth::id();
+
+        // check if user has access
+        // find pet by id
+        $pet = Pet::find($id);
+
+        if ($authUserId !== $pet->pet_owner_id) {
+            return response()->json(["error"=>"You are not authorized"],403);
+        }
+
+        // delete existing file
+        if($pet->image_storage_path !== null) {
+            Storage::delete($pet->image_storage_path);
+        }
+
+        // get file
+        $imageFile = $request->file('image');
+        $imageName = $imageFile->hashName();
+
+        $directory = $authUserId;
+        Log::debug($imageFile);
+        Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
+
+        $pathToFile = $directory."/".$imageName;
+        $pet->update(
+            ["image_storage_path"=>$pathToFile]
+        );
+
+        $url= Storage::temporaryUrl($pathToFile,now()->addHour(1));
+
+        return response()->json([
+            'message' => "Image updated successfully",
+            'image_url' => $url,
+        ]);
+
+    }
+    // TODO: add pet picture route
+    // TODO: add picture to return json
 
 }
 

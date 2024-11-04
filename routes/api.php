@@ -44,9 +44,9 @@ Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
    Route::post('/create', [PetController::class, 'create']);
    Route::delete('/delete/{id}', [PetController::class, 'delete']);
    Route::post('/update', [PetController::class, 'update']);
+    Route::post('/change-avatar', [PetController::class, 'changeAvatar']);
 
    Route::get('/pet-list', [PetController::class,'getList']);
-
    Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
 
 });
@@ -55,3 +55,4 @@ Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
 //     ->middleware(['signed'])
 //     ->name('verification.verify');
+
