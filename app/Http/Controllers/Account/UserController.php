@@ -101,7 +101,7 @@ class UserController extends Controller
         $imageFile = $request->file('image');
         $imageName = $imageFile->hashName();
 
-        $directory = $authUserId;
+        $directory = "{$authUserId}/images";
         Log::debug($imageFile);
         Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
