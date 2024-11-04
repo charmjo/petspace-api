@@ -4,7 +4,7 @@ use App\Http\Controllers\Account\MemberController;
 use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\Auth\UserMobileController;
 use App\Http\Controllers\Pet\PetController;
-use App\Models\Pet\PetDocuRecords;
+use App\Http\Controllers\Pet\PetDocuRecordsController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\RoutePath;
 
@@ -60,8 +60,8 @@ Route::prefix('pet')->middleware('auth:sanctum')
     });
 
 // pet management
-Route::prefix('pet/record')->middleware('auth:sanctum')
-    ->controller(PetDocuRecords::class)
+Route::prefix('pet-record')->middleware('auth:sanctum')
+    ->controller(PetDocuRecordsController::class)
     ->group(
     function () {
         Route::post('/upload', 'create');
