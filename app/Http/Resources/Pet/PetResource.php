@@ -26,6 +26,7 @@ class PetResource extends JsonResource
             'gender' => $this->gender,
             'animal_type' => $this->animal_type,
             'color' => $this->color,
+            'bio' => $this->bio,
             'pet_image' => $temporaryUrl
         ];
     }
