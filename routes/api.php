@@ -1,21 +1,20 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Account\MemberController;
+use App\Http\Controllers\Account\UserController;
+use App\Http\Controllers\Auth\UserMobileController;
+use App\Http\Controllers\Pet\PetController;
+use App\Models\Pet\PetDocuRecords;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\RoutePath;
 
 
 // my custom controllers
-use App\Http\Controllers\Auth\UserMobileController;
-use App\Http\Controllers\Auth\EmailVerificationController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PetController;
-use Laravel\Fortify\RoutePath;
 
 
 // unprotected routes:
 Route::post(RoutePath::for('create-user','/create-user'), [UserMobileController::class, 'createUser']);
 
-// now, how do I transfer this to another controller?. Ai waitttt... I can just
 Route::post('/get-token', [UserMobileController::class,'generateToken']);
 
 // protected route
@@ -25,31 +24,48 @@ Route::middleware('auth:sanctum')->group(function () {
     //     ->name('verification.send');
 });
 
-// i'll take care of security once I finish the crud.
-// also, i'll need to do a web version of this coz I need to know how to protect this.
-Route::prefix('account')->middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [UserController::class, 'getUser']);
-    Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
-    Route::post('/update', [UserController::class, 'updateUser']);
-    Route::post('/change-avatar', [UserController::class, 'changeAvatar']);
+// account management
+Route::prefix('account')->middleware('auth:sanctum')
+    ->controller(UserController::class)
+    ->group(
+    function () {
+        Route::get('/user', 'getUser');
+        Route::delete('/delete/{id}', 'deleteUser');
+        Route::post('/update', 'updateUser');
+        Route::post('/change-avatar', 'changeAvatar');
 
-    // member management
-    Route::get('/member-list', [UserController::class, 'getAllMembers']);
-    Route::post('/member/add', [UserController::class, 'addMember']);
-    Route::delete('/member/delete/{id}', [UserController::class, 'removeMember']);
-});
+    });
 
-// also, i'll need to do a web version of this coz I need to know how to protect this.
-Route::prefix('pet')->middleware('auth:sanctum')->group(function () {
-   Route::post('/create', [PetController::class, 'create']);
-   Route::delete('/delete/{id}', [PetController::class, 'delete']);
-   Route::post('/update', [PetController::class, 'update']);
-    Route::post('/change-avatar', [PetController::class, 'changeAvatar']);
+// member management
+Route::prefix('account/member')->middleware('auth:sanctum')
+    ->controller(MemberController::class)
+    ->group(
+    function () {
+        Route::post('/add', 'addMember');
+        Route::delete('/delete/{id}', 'removeMember');
+        Route::get('/member-list', 'getAllMembers');
+    });
 
-   Route::get('/pet-list', [PetController::class,'getList']);
-   Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
+// pet management
+Route::prefix('pet')->middleware('auth:sanctum')
+    ->controller(PetController::class)
+    ->group(
+    function () {
+       Route::post('/create', 'create');
+       Route::delete('/delete/{id}', 'delete');
+       Route::post('/update', 'update');
+       Route::post('/change-avatar', 'changeAvatar');
+       Route::get('/pet-list', 'getList');
+       Route::get('/pet-detail/{id}', 'getDetail');
+    });
 
-});
+// pet management
+Route::prefix('pet/record')->middleware('auth:sanctum')
+    ->controller(PetDocuRecords::class)
+    ->group(
+    function () {
+        Route::post('/upload', 'create');
+    });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
