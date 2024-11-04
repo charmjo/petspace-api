@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pet;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Pet\CreateNewPetRequest;
-use Illuminate\Support\Facades\Log;
-use App\Models\Pet\Pet;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Pet\PetResource;
+use App\Models\Pet\Pet;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PetController extends Controller
@@ -124,7 +125,7 @@ class PetController extends Controller
         $imageFile = $request->file('image');
         $imageName = $imageFile->hashName();
 
-        $directory = $authUserId;
+        $directory = "{$authUserId}/images";
         Log::debug($imageFile);
         Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
@@ -143,6 +144,8 @@ class PetController extends Controller
     }
     // TODO: add pet picture route
     // TODO: add picture to return json
+
+
 
 }
 
