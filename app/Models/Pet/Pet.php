@@ -36,4 +36,6 @@ class Pet extends Model
     {
         return $this->HasMany(PetDocuRecords::class, 'pet_id');
     }
+
+
 }

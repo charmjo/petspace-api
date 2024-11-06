@@ -5,6 +5,7 @@ use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\Auth\UserMobileController;
 use App\Http\Controllers\Pet\PetController;
 use App\Http\Controllers\Pet\PetDocuRecordsController;
+use App\Http\Controllers\Pet\PetHealthController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\RoutePath;
 
@@ -68,6 +69,13 @@ Route::prefix('pet-record')->middleware('auth:sanctum')
         Route::get('/list/{id}', 'getList');
     });
 
+// pet management
+Route::prefix('pet/health')->middleware('auth:sanctum')
+    ->controller(PetHealthController::class)
+    ->group(
+        function () {
+            Route::get('/allergen-dictionary', 'getAllergenDictionary');
+        });
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
 //     ->middleware(['signed'])
