@@ -1,10 +1,10 @@
-# Version Notes October 2024
+_# Version Notes October 2024
 ## October 31
 - Created JSON structure guide for endpoints
 - reformatted response json structure
 - added bio column in Pets table
 - so, rerun the migrations and seed
-- will not use nested JSON endpoints moving forward
+- will not use nested JSON endpoints moving forward_
 
 ## October 28
 ### Auth - Web

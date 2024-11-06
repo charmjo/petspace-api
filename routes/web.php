@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\MemberController;
 use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\Pet\PetController;
+use App\Http\Controllers\Pet\PetDocuRecordsController;
 use Illuminate\Support\Facades\Route;
 
 // protected routes
@@ -41,6 +42,15 @@ Route::prefix('web/pet')
             Route::post('/change-avatar', [PetController::class, 'changeAvatar']);
             Route::get('/pet-list', [PetController::class,'getList']);
             Route::get('/pet-detail/{id}',[PetController::class,'getDetail']);
+        });
+
+// pet record management
+Route::prefix('web/pet-record')->middleware('auth:sanctum')
+    ->controller(PetDocuRecordsController::class)
+    ->group(
+        function () {
+            Route::post('/upload', 'create');
+            Route::get('/list/{id}', 'getList');
         });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification

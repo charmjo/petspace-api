@@ -26,4 +26,9 @@ class PetDocuRecords extends Model
     {
         return $this->belongsTo(Pet::class, 'pet_id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(Pet::class, 'user_id');
+    }
 }

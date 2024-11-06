@@ -59,12 +59,13 @@ Route::prefix('pet')->middleware('auth:sanctum')
        Route::get('/pet-detail/{id}', 'getDetail');
     });
 
-// pet management
+// pet record management
 Route::prefix('pet-record')->middleware('auth:sanctum')
     ->controller(PetDocuRecordsController::class)
     ->group(
     function () {
         Route::post('/upload', 'create');
+        Route::get('/list/{id}', 'getList');
     });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification

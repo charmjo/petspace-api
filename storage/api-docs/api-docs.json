@@ -1,0 +1,151 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "PetSpace",
+        "description": "This is a sample API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/pet-record/upload": {
+            "post": {
+                "tags": [
+                    "PetDocuRecordsController"
+                ],
+                "summary": "Upload a pet document",
+                "operationId": "979d896d67c8fb07a9ee72ef9608c47a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pet_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "filename": {
+                                        "type": "string",
+                                        "example": "document.pdf"
+                                    },
+                                    "document": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "example": "document.pdf"
+                                    },
+                                    "date_added": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-11-04"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/pet-record/list/{pet_id}": {
+            "get": {
+                "tags": [
+                    "PetDocuRecordsController"
+                ],
+                "summary": "Retrieve document records for a specific pet",
+                "operationId": "7b6cd007b437bc32e093c23e3adc09a9",
+                "parameters": [
+                    {
+                        "name": "pet_id",
+                        "in": "path",
+                        "description": "ID of the pet to retrieve records for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Record retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record retrieved successfully"
+                                        },
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "pet_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "added_by_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "added_by_first_name": {
+                                                        "type": "string",
+                                                        "example": "Steve"
+                                                    },
+                                                    "added_by_last_name": {
+                                                        "type": "string",
+                                                        "example": "Tester"
+                                                    },
+                                                    "record_path": {
+                                                        "type": "string",
+                                                        "format": "url",
+                                                        "example": "http://localhost:8000/storage/3/documents/kXD9Eh3xZBTEXjwzvIIZBcqY6TJGG2BN07PlU34F.pdf?expires=1730855033&signature=c3e5c7daa5a259afc22b91580bc3d8a88b4b7c4749a206bf3e7ade0731ef7b59"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-11-04T20:21:36.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-11-04T20:21:36.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You are not authorized"
+                    },
+                    "404": {
+                        "description": "No documents found"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "PetDocuRecordsController",
+            "description": "PetDocuRecordsController"
+        }
+    ]
+}
