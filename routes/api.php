@@ -70,11 +70,18 @@ Route::prefix('pet-record')->middleware('auth:sanctum')
     });
 
 // pet management
-Route::prefix('pet/health')->middleware('auth:sanctum')
+Route::prefix('pet')->middleware('auth:sanctum')
     ->controller(PetHealthController::class)
     ->group(
         function () {
+            // pet allergy 
             Route::get('/allergen-dictionary', 'getAllergenDictionary');
+            Route::post('/{petId}/allergy/add/{allergenId}', 'addPetAllergen');
+            Route::get('/{id}/allergies', 'getPetAllergenList');
+            Route::delete('/{petId}/allergy/remove/{allergenId}', 'removePetAllergen');
+
+            // 
+            Route::post('/{petId}/weight/update/{weight}', 'updateWeight');
         });
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )

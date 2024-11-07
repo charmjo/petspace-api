@@ -4,10 +4,12 @@
 - Implemented upload documents route for pet
 - Added upload image to user and pet
 - Updated pet and user resources to add image url
+- php artisan storage:link
 
 ### Documentation
 - run composer install for updated dependencies
 - added swagger to have clearer api documentation
+
 - 
 
 
