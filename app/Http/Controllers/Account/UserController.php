@@ -17,6 +17,51 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     const MEMBER_LIMIT = 10;
+
+    /**
+     * @OA\Get(
+     *     path="/account/user",
+     *     summary="Get user account details",
+     *     description="Retrieves the account details of the currently authenticated user. Web register and login returns the same json structure",
+     *     operationId="getUser",
+     *     tags={"Account"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User account details retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", example=2),
+     *             @OA\Property(property="first_name", type="string", example="Charm"),
+     *             @OA\Property(property="last_name", type="string", example="Test"),
+     *             @OA\Property(property="role", type="string", nullable=true, example=null),
+     *             @OA\Property(property="dob", type="string", format="date", nullable=true, example=null),
+     *             @OA\Property(property="gender", type="string", nullable=true, example=null),
+     *             @OA\Property(property="email", type="string", format="email", example="test2@example.com"),
+     *             @OA\Property(property="phone", type="string", nullable=true, example=null),
+     *             @OA\Property(property="pets_count", type="integer", example=3),
+     *             @OA\Property(property="is_form_filled", type="boolean", nullable=true, example=null),
+     *             @OA\Property(property="profile_image", type="string", format="url", nullable=true, example=null),
+     *             @OA\Property(
+     *                 property="address",
+     *                 type="object",
+     *                 @OA\Property(property="street_name", type="string", nullable=true, example=null),
+     *                 @OA\Property(property="city", type="string", nullable=true, example=null),
+     *                 @OA\Property(property="province", type="string", nullable=true, example=null),
+     *                 @OA\Property(property="postal_code", type="string", nullable=true, example=null),
+     *                 @OA\Property(property="country", type="string", nullable=true, example=null)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized - User not authenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User account not found"
+     *     )
+     * )
+     */
     public function  getUser (Request $request): \Illuminate\Http\JsonResponse
     {
         // TODO: place this in a controller this is so unholy.
@@ -42,7 +87,71 @@ class UserController extends Controller
         // return response of deleted user, frontend will deal with frontend things.
     }
 
-   public function updateUser (UpdateUserRequest $request) : JsonResponse {
+    /**
+     * @OA\Post(
+     *     path="/api/account/update",
+     *     summary="Update user account details",
+     *     description="Updates the user account information, including address and personal details",
+     *     operationId="updateUserAccount",
+     *     tags={"Account"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(property="first_name", type="string", maxLength=255, example="Steve", description="User's first name"),
+     *                 @OA\Property(property="last_name", type="string", maxLength=255, example="Tester", description="User's last name"),
+     *                 @OA\Property(property="phone", type="string", example="(123) 456-7890", description="User's phone number"),
+     *                 @OA\Property(property="address_street_name", type="string", maxLength=255, example="103 Redfox Grove", description="Street name of the user's address"),
+     *                 @OA\Property(property="address_city", type="string", maxLength=255, example="Waterloo", description="City of the user's address"),
+     *                 @OA\Property(property="address_province", type="string", maxLength=255, example="Alberta", description="Province of the user's address"),
+     *                 @OA\Property(property="address_country", type="string", maxLength=255, example="Canada", description="Country of the user's address"),
+     *                 @OA\Property(property="address_postal_code", type="string", maxLength=255, example="A1B 2C3", description="Postal code of the user's address"),
+     *                 @OA\Property(property="is_form_filled", type="boolean", example=true, description="Indicates whether the user form has been filled")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User account updated successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", example=3),
+     *             @OA\Property(property="first_name", type="string", example="Steve"),
+     *             @OA\Property(property="last_name", type="string", example="Tester"),
+     *             @OA\Property(property="role", type="string", nullable=true, example=null),
+     *             @OA\Property(property="dob", type="string", format="date", nullable=true, example=null),
+     *             @OA\Property(property="gender", type="string", nullable=true, example=null),
+     *             @OA\Property(property="email", type="string", format="email", example="steve.test@example.com"),
+     *             @OA\Property(property="phone", type="string", example="(123) 456-7890"),
+     *             @OA\Property(property="pets_count", type="integer", example=4),
+     *             @OA\Property(property="is_form_filled", type="boolean", nullable=true, example=null),
+     *             @OA\Property(property="profile_image", type="string", format="url", nullable=true, example=null),
+     *             @OA\Property(
+     *                 property="address",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="user_id", type="integer", example=3),
+     *                 @OA\Property(property="street_name", type="string", example="103 Redfox Grove"),
+     *                 @OA\Property(property="city", type="string", example="Waterloo"),
+     *                 @OA\Property(property="province", type="string", example="Alberta"),
+     *                 @OA\Property(property="postal_code", type="string", example="A1B 2C3"),
+     *                 @OA\Property(property="country", type="string", example="Canada")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request - Invalid input"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found - User not found"
+     *     )
+     * )
+     */
+    public function updateUser (UpdateUserRequest $request) : JsonResponse {
         // find user by id
         $authUserId = Auth::id();
         $user = User::find($authUserId);
