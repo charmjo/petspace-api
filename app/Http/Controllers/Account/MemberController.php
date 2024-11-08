@@ -56,6 +56,7 @@ class MemberController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
+        // TODO: add constraint on the database table and move the checking logic to the exception
         // get existing data
         $existingData = DB::table('user_family')
             ->where('main_user_id',$id)

@@ -108,6 +108,7 @@ class PetController extends Controller
         // get logged user
         $authUserId = Auth::id();
 
+        // TODO: place this somewhere to centralize this checking code
         // check if user has access
         // find pet by id
         $pet = Pet::find($id);

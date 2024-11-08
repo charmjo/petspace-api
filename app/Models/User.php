@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Account\Address;
 use App\Models\Pet\Pet;
+use App\Models\Pet\PetDocuRecords;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -72,6 +73,11 @@ class User extends Authenticatable
     public function pets(): HasMany
     {
         return $this->hasMany(Pet::class,'pet_owner_id');
+    }
+
+    public function docuRecords(): HasMany
+    {
+        return $this->hasMany(PetDocuRecords::class,'user_id');
     }
 
     public function loadWithOtherModels () {

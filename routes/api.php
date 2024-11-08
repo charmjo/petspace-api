@@ -4,7 +4,8 @@ use App\Http\Controllers\Account\MemberController;
 use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\Auth\UserMobileController;
 use App\Http\Controllers\Pet\PetController;
-use App\Models\Pet\PetDocuRecords;
+use App\Http\Controllers\Pet\PetDocuRecordsController;
+use App\Http\Controllers\Pet\PetHealthController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\RoutePath;
 
@@ -59,14 +60,31 @@ Route::prefix('pet')->middleware('auth:sanctum')
        Route::get('/pet-detail/{id}', 'getDetail');
     });
 
-// pet management
-Route::prefix('pet/record')->middleware('auth:sanctum')
-    ->controller(PetDocuRecords::class)
+// pet record management
+Route::prefix('pet-record')->middleware('auth:sanctum')
+    ->controller(PetDocuRecordsController::class)
     ->group(
     function () {
         Route::post('/upload', 'create');
+        Route::get('/list/{id}', 'getList');
     });
 
+// pet health
+Route::prefix('pet')->middleware('auth:sanctum')
+    ->controller(PetHealthController::class)
+    ->group(
+        function () {
+            // pet allergy
+            Route::get('/allergen-dictionary', 'getAllergenDictionary');
+            Route::post('/{petId}/allergy/add/{allergenId}', 'addPetAllergen');
+            Route::get('/{id}/allergies', 'getPetAllergenList');
+            Route::delete('/{petId}/allergy/remove/{allergenId}', 'removePetAllergen');
+
+            // pet weight
+            Route::post('/{petId}/weight/update/{weight}', 'updateWeight');
+            Route::get('/{petId}/weight/latest', 'getLatestWeight');
+            Route::get('/{petId}/weight/history-list', 'getWeightHistory');
+        });
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
 //     ->middleware(['signed'])
