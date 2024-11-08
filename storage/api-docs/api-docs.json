@@ -119,7 +119,7 @@
                 }
             }
         },
-        "/api/account/update": {
+        "/account/update": {
             "post": {
                 "tags": [
                     "Account"
@@ -294,6 +294,94 @@
                     },
                     "404": {
                         "description": "Not Found - User not found"
+                    }
+                }
+            }
+        },
+        "/pet/pet-detail/{petId}": {
+            "get": {
+                "tags": [
+                    "Pet Profile"
+                ],
+                "summary": "Get pet details by ID",
+                "description": "Retrieves detailed information about a pet, including its breed, gender, color, and other details.",
+                "operationId": "getPetDetail",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pet details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Nacho"
+                                        },
+                                        "breed": {
+                                            "type": "string",
+                                            "example": "Persian"
+                                        },
+                                        "dob": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022/06/28"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "male"
+                                        },
+                                        "animal_type": {
+                                            "type": "string",
+                                            "example": "cat"
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "white"
+                                        },
+                                        "bio": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "is_tagged": {
+                                            "type": "boolean",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "microchip_id": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "pet_image": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
                     }
                 }
             }
@@ -982,6 +1070,10 @@
         {
             "name": "Account",
             "description": "Account"
+        },
+        {
+            "name": "Pet Profile",
+            "description": "Pet Profile"
         },
         {
             "name": "PetDocuRecordsController",

@@ -89,7 +89,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/account/update",
+     *     path="/account/update",
      *     summary="Update user account details",
      *     description="Updates the user account information, including address and personal details",
      *     operationId="updateUserAccount",
