@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\MemberController;
 use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\Pet\PetController;
 use App\Http\Controllers\Pet\PetDocuRecordsController;
+use App\Http\Controllers\Pet\PetHealthController;
 use Illuminate\Support\Facades\Route;
 
 // protected routes
@@ -51,6 +52,22 @@ Route::prefix('web/pet-record')->middleware('auth:sanctum')
         function () {
             Route::post('/upload', 'create');
             Route::get('/list/{id}', 'getList');
+        });
+
+Route::prefix('web/pet')->middleware('auth:sanctum')
+    ->controller(PetHealthController::class)
+    ->group(
+        function () {
+            // pet allergy
+            Route::get('/allergen-dictionary', 'getAllergenDictionary');
+            Route::post('/{petId}/allergy/add/{allergenId}', 'addPetAllergen');
+            Route::get('/{id}/allergies', 'getPetAllergenList');
+            Route::delete('/{petId}/allergy/remove/{allergenId}', 'removePetAllergen');
+
+            // pet weight
+            Route::post('/{petId}/weight/update/{weight}', 'updateWeight');
+            Route::get('/{petId}/weight/latest', 'getLatestWeight');
+            Route::get('/{petId}/weight/history-list', 'getWeightHistory');
         });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification

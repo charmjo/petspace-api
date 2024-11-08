@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade');
             $table->foreignId('allergen_id')->constrained('pet_allergens')->onDelete('cascade');
             $table->foreignId('added_by')->constrained('users')->onDelete('cascade');
-            $table->unique(['allergen_id', 'added_by']);
+            $table->unique(['pet_id','allergen_id', 'added_by']);
             $table->timestamps();
         });
         // dictionary schema

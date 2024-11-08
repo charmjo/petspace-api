@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "PetSpace",
-        "description": "This is a sample API",
+        "description": "Documentation for PetSpace Endpoints",
         "version": "1.0.0"
     },
     "paths": {
@@ -140,12 +140,560 @@
                     }
                 }
             }
+        },
+        "/pet/allergen-dictionary": {
+            "get": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Get allergen dictionary list",
+                "description": "Retrieves a list of allergens and their classifications",
+                "operationId": "getAllergenDictionary",
+                "responses": {
+                    "200": {
+                        "description": "Allergy List retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Allergy List retrieved successfully"
+                                        },
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "ID of the allergen",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "allergen": {
+                                                        "description": "Name of the allergen",
+                                                        "type": "string",
+                                                        "example": "Beef"
+                                                    },
+                                                    "classification": {
+                                                        "description": "Classification of the allergen",
+                                                        "type": "string",
+                                                        "example": "Food"
+                                                    },
+                                                    "species_affected": {
+                                                        "description": "Species affected by the allergen",
+                                                        "type": "string",
+                                                        "example": "Dog & Cat"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "Timestamp of allergen creation",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "Timestamp of allergen update",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Allergens not found"
+                    }
+                }
+            }
+        },
+        "pet/{petId}/allergy/add/{allergenId}": {
+            "post": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Add a pet allergy",
+                "description": "Adds an allergy to a pet and returns the updated list of allergies",
+                "operationId": "addPetAllergy",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "allergenId",
+                        "in": "path",
+                        "description": "ID of the allergen",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Allergy added successfully with updated allergy list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pet Allergy added successfully"
+                                        },
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Record ID of the pet allergy",
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "allergen_id": {
+                                                        "description": "ID of the allergen",
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "allergen": {
+                                                        "description": "Name of the allergen",
+                                                        "type": "string",
+                                                        "example": "Turkey"
+                                                    },
+                                                    "classification": {
+                                                        "description": "Classification of the allergen",
+                                                        "type": "string",
+                                                        "example": "Food"
+                                                    },
+                                                    "added_by_first_name": {
+                                                        "description": "First name of the person who added the allergy",
+                                                        "type": "string",
+                                                        "example": "Steve"
+                                                    },
+                                                    "added_by_last_name": {
+                                                        "description": "Last name of the person who added the allergy",
+                                                        "type": "string",
+                                                        "example": "Tester"
+                                                    },
+                                                    "added_by_role": {
+                                                        "description": "Role of the person who added the allergy, if applicable",
+                                                        "type": "string",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            }
+        },
+        "/pet/{petId}/allergy/remove/{allergenId}": {
+            "delete": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Remove pet allergy",
+                "description": "Removes an allergy from the specified pet and returns the updated allergy list",
+                "operationId": "removePetAllergy",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "allergenId",
+                        "in": "path",
+                        "description": "ID of the allergen to be removed",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pet allergy removed successfully with updated allergy list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pet allergy removed successfully"
+                                        },
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Record ID of the pet allergy",
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "allergen_id": {
+                                                        "description": "ID of the allergen",
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "allergen": {
+                                                        "description": "Name of the allergen",
+                                                        "type": "string",
+                                                        "example": "Turkey"
+                                                    },
+                                                    "classification": {
+                                                        "description": "Classification of the allergen",
+                                                        "type": "string",
+                                                        "example": "Food"
+                                                    },
+                                                    "added_by_first_name": {
+                                                        "description": "First name of the person who added the allergy",
+                                                        "type": "string",
+                                                        "example": "Steve"
+                                                    },
+                                                    "added_by_last_name": {
+                                                        "description": "Last name of the person who added the allergy",
+                                                        "type": "string",
+                                                        "example": "Tester"
+                                                    },
+                                                    "added_by_role": {
+                                                        "description": "Role of the person who added the allergy, if applicable",
+                                                        "type": "string",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet or allergen not found"
+                    }
+                }
+            }
+        },
+        "/pet/{petId}/allergies": {
+            "get": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Get pet allergy list",
+                "description": "Retrieves a list of allergies for the specified pet",
+                "operationId": "getPetAllergies",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pet allergy list retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pet allergy list retrieved successfully"
+                                        },
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Record ID of the pet allergy",
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "allergen_id": {
+                                                        "description": "ID of the allergen",
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "allergen": {
+                                                        "description": "Name of the allergen",
+                                                        "type": "string",
+                                                        "example": "Turkey"
+                                                    },
+                                                    "classification": {
+                                                        "description": "Classification of the allergen",
+                                                        "type": "string",
+                                                        "example": "Food"
+                                                    },
+                                                    "added_by_first_name": {
+                                                        "description": "First name of the person who added the allergy",
+                                                        "type": "string",
+                                                        "example": "Steve"
+                                                    },
+                                                    "added_by_last_name": {
+                                                        "description": "Last name of the person who added the allergy",
+                                                        "type": "string",
+                                                        "example": "Tester"
+                                                    },
+                                                    "added_by_role": {
+                                                        "description": "Role of the person who added the allergy, if applicable",
+                                                        "type": "string",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            }
+        },
+        "pet/{petId}/weight/update/{weight}": {
+            "post": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Updates pet weight",
+                "description": "Updates pet weight",
+                "operationId": "updatePetWeight",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "weight",
+                        "in": "path",
+                        "description": "pet weight",
+                        "required": true,
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of weight records",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pet weight updated successfully"
+                                        },
+                                        "weight": {
+                                            "properties": {
+                                                "weight": {
+                                                    "description": "Updated weight of the pet",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 5.5
+                                                },
+                                                "added_by_first_name": {
+                                                    "description": "First name of the person who updated the weight",
+                                                    "type": "string",
+                                                    "example": "Steve"
+                                                },
+                                                "added_by_last_name": {
+                                                    "description": "Last name of the person who updated the weight",
+                                                    "type": "string",
+                                                    "example": "Tester"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            }
+        },
+        "pet/{petId}/weight/history-list": {
+            "get": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Retrieve the pet weight history",
+                "description": "Returns latest weight data",
+                "operationId": "getPetWeightHistory",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of weight records",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "weight": {
+                                            "description": "pet weight in kilograms",
+                                            "type": "number",
+                                            "format": "decimal",
+                                            "example": "3.5"
+                                        },
+                                        "added_by_first_name": {
+                                            "type": "string",
+                                            "example": "Steve"
+                                        },
+                                        "added_by_last_name": {
+                                            "type": "string",
+                                            "example": "Tester"
+                                        },
+                                        "created_at": {
+                                            "type": "timestamp",
+                                            "example": "2024-11-07 21:52:28"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            }
+        },
+        "pet/{petId}/weight/latest": {
+            "get": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Retrieve pet's latest weight",
+                "description": "Returns data for pet's latest weight and who added them",
+                "operationId": "getPetWeightLatest",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of weight records",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "weight": {
+                                                "description": "pet weight in kilograms",
+                                                "type": "number",
+                                                "format": "decimal",
+                                                "example": "3.5"
+                                            },
+                                            "added_by_first_name": {
+                                                "type": "string",
+                                                "example": "Steve"
+                                            },
+                                            "added_by_last_name": {
+                                                "type": "string",
+                                                "example": "Tester"
+                                            },
+                                            "created_at": {
+                                                "type": "timestamp",
+                                                "example": "2024-11-07 21:52:28"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "PetDocuRecordsController",
             "description": "PetDocuRecordsController"
+        },
+        {
+            "name": "PetHealth",
+            "description": "PetHealth"
         }
     ]
 }

@@ -1,11 +1,4 @@
 <?php
-/**
- * @OA\Info(
- *     title="Pet Document Records Manager",
- *     version="0.1",
- *     description="API documentation for managing pet records."
- * )
- */
 namespace App\Http\Controllers\Pet;
 
 use App\Http\Controllers\Controller;
@@ -17,13 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * @OA\Info(
- *     title="PetSpace",
- *     version="1.0.0",
- *     description="This is a sample API"
- * )
- */
 class PetDocuRecordsController extends Controller
 {
 

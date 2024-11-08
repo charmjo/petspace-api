@@ -48,14 +48,33 @@ class Pet extends Model
             , 'pa.id as allergen_id'
             , 'pa.allergen'
             ,'pa.classification'
-            ,'user.first_name as added_by_first_name' 
+            ,'user.first_name as added_by_first_name'
             ,'user.last_name as added_by_last_name'
             ,'user.role as added_by_role'
-            )
+        )
         ->get();
     }
 
+    public static function retrieveLatestWeight($petId) {
+        return DB::table('pet_weight_record as pwr')
+            ->where('pwr.pet_id', $petId)
+            ->select('weight'
+                ,'users.first_name as added_by_first_name'
+                ,'users.last_name as added_by_last_name')
+            ->leftJoin('users','pwr.added_by','=','users.id')
+            ->orderBy('pwr.created_at', 'desc')
+            ->first();
+    }
 
-
-
+    public static function retrieveWeightHistory($petId) : Collection {
+        return DB::table('pet_weight_record as pwr')
+            ->where('pwr.pet_id', $petId)
+            ->select('weight'
+                ,'users.first_name as added_by_first_name'
+                ,'users.last_name as added_by_last_name'
+                ,'pwr.created_at as created_at')
+            ->leftJoin('users','pwr.added_by','=','users.id')
+            ->orderBy('pwr.created_at', 'desc')
+            ->get();
+    }
 }
