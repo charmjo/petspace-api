@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('bio')->nullable();
             $table->timestamp('dob')->nullable();
             $table->string('color')->nullable();
-            $table->string('gender')->nullable(); // I'd rather have the front end deal with this
+            $table->string('gender')->nullable();
+            $table->boolean('is_tagged')->nullable();
+            $table->string('microchip_id')->nullable();
             $table->string('image_storage_path')->nullable();
             $table->timestamps();
         });
