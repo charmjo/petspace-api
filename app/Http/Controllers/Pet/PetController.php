@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PetController extends Controller
 {
-    //
     public function create (CreateNewPetRequest $request) {
         Log::debug('create pet request here: ');
         Log::debug($request);
@@ -55,6 +54,48 @@ class PetController extends Controller
         //TODO: add success
         return response()->json(new PetResource($pet),200);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/pet/pet-detail/{petId}",
+     *     summary="Get pet details by ID",
+     *     description="Retrieves detailed information about a pet, including its breed, gender, color, and other details.",
+     *     operationId="getPetDetail",
+     *     tags={"Pet Profile"},
+     *     @OA\Parameter(
+     *         name="petId",
+     *         in="path",
+     *         description="ID of the pet",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example=1
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Pet details retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="name", type="string", example="Nacho"),
+     *             @OA\Property(property="breed", type="string", example="Persian"),
+     *             @OA\Property(property="dob", type="string", format="date", example="2022/06/28"),
+     *             @OA\Property(property="gender", type="string", example="male"),
+     *             @OA\Property(property="animal_type", type="string", example="cat"),
+     *             @OA\Property(property="color", type="string", example="white"),
+     *             @OA\Property(property="bio", type="string", nullable=true, example=null),
+     *             @OA\Property(property="is_tagged", type="boolean", nullable=true, example=null),
+     *             @OA\Property(property="microchip_id", type="string", nullable=true, example=null),
+     *             @OA\Property(property="pet_image", type="string", nullable=true, example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pet not found"
+     *     )
+     * )
+     */
 
     public function getDetail ($id) {
 
