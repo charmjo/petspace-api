@@ -27,6 +27,8 @@ class PetResource extends JsonResource
             'animal_type' => $this->animal_type,
             'color' => $this->color,
             'bio' => $this->bio,
+            'is_tagged' => $this->is_tagged,
+            'microchip_id' => $this->microchip_id,
             'pet_image' => $temporaryUrl
         ];
     }

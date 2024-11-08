@@ -23,7 +23,11 @@ class UserResource extends JsonResource
         // set a temporary URL for images
         $pathToFile = $this->avatar_storage_path;
         $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addSeconds(600)) : null;
-        
+
+        $addressData = $this->whenLoaded('address', function () {
+            return $this->address;
+        });
+
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
@@ -37,9 +41,13 @@ class UserResource extends JsonResource
             'is_form_filled' => $this->is_form_filled,
             'profile_image' => $temporaryUrl,
             // Load the address relationship with conditional check
-            'address' => $this->whenLoaded('address', function () {
-                return $this->address;
-            }),
+            'address' => [
+                    'street_name' => $addressData->street_name ?? null,
+                    'city' => $addressData->city ?? null,
+                    'province' => $addressData->province ?? null,
+                    'postal_code' => $addressData->postal_code ?? null,
+                    'country'=> $addressData->country ?? null
+                ]
         ];
     }
 }

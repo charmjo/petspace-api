@@ -6,6 +6,298 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/account/user": {
+            "get": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get user account details",
+                "description": "Retrieves the account details of the currently authenticated user. Web register and login returns the same json structure",
+                "operationId": "getUser",
+                "responses": {
+                    "200": {
+                        "description": "User account details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Charm"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Test"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "dob": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "test2@example.com"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "pets_count": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "is_form_filled": {
+                                            "type": "boolean",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "profile_image": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "address": {
+                                            "properties": {
+                                                "street_name": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "province": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "postal_code": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - User not authenticated"
+                    },
+                    "404": {
+                        "description": "User account not found"
+                    }
+                }
+            }
+        },
+        "/api/account/update": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Update user account details",
+                "description": "Updates the user account information, including address and personal details",
+                "operationId": "updateUserAccount",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "description": "User's first name",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Steve"
+                                    },
+                                    "last_name": {
+                                        "description": "User's last name",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Tester"
+                                    },
+                                    "phone": {
+                                        "description": "User's phone number",
+                                        "type": "string",
+                                        "example": "(123) 456-7890"
+                                    },
+                                    "address_street_name": {
+                                        "description": "Street name of the user's address",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "103 Redfox Grove"
+                                    },
+                                    "address_city": {
+                                        "description": "City of the user's address",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Waterloo"
+                                    },
+                                    "address_province": {
+                                        "description": "Province of the user's address",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Alberta"
+                                    },
+                                    "address_country": {
+                                        "description": "Country of the user's address",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Canada"
+                                    },
+                                    "address_postal_code": {
+                                        "description": "Postal code of the user's address",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "A1B 2C3"
+                                    },
+                                    "is_form_filled": {
+                                        "description": "Indicates whether the user form has been filled",
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User account updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Steve"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Tester"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "dob": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "steve.test@example.com"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "(123) 456-7890"
+                                        },
+                                        "pets_count": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "is_form_filled": {
+                                            "type": "boolean",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "profile_image": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "address": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "street_name": {
+                                                    "type": "string",
+                                                    "example": "103 Redfox Grove"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "Waterloo"
+                                                },
+                                                "province": {
+                                                    "type": "string",
+                                                    "example": "Alberta"
+                                                },
+                                                "postal_code": {
+                                                    "type": "string",
+                                                    "example": "A1B 2C3"
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Canada"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid input"
+                    },
+                    "404": {
+                        "description": "Not Found - User not found"
+                    }
+                }
+            }
+        },
         "/pet-record/upload": {
             "post": {
                 "tags": [
@@ -687,6 +979,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Account",
+            "description": "Account"
+        },
         {
             "name": "PetDocuRecordsController",
             "description": "PetDocuRecordsController"
