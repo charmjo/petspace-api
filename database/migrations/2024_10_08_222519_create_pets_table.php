@@ -21,7 +21,8 @@ return new class extends Migration
             $table->timestamp('dob')->nullable();
             $table->string('color')->nullable();
             $table->string('gender')->nullable();
-            $table->boolean('is_tagged')->nullable();
+            $table->boolean('is_microchipped')->nullable();
+            $table->boolean('is_spayed_neutered')->nullable();
             $table->string('microchip_id')->nullable();
             $table->string('image_storage_path')->nullable();
             $table->timestamps();
