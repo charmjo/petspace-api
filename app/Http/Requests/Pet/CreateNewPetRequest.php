@@ -32,8 +32,9 @@ class CreateNewPetRequest extends FormRequest
             'color' => ['required','string','max:100'],
             'gender' => ['required','string'],
             'bio' => ['string','max:100'],
-            'is_tagged' => ['required','boolean'],
-            'microchip_id' => ['string'],
+            'is_spayed_neutered' => ['required','boolean'],
+            'is_microchipped' => ['required','boolean'],
+            'microchip_id' => ['numeric'],
         ];
     }
 }
