@@ -85,8 +85,9 @@ class PetController extends Controller
      *             @OA\Property(property="animal_type", type="string", example="cat"),
      *             @OA\Property(property="color", type="string", example="white"),
      *             @OA\Property(property="bio", type="string", nullable=true, example=null),
-     *             @OA\Property(property="is_tagged", type="boolean", nullable=true, example=null),
+     *             @OA\Property(property="is_microchipped", type="boolean", nullable=true, example=null),
      *             @OA\Property(property="microchip_id", type="string", nullable=true, example=null),
+     *             @OA\Property(property="is_spayed_neutered", type="boolean", example=true),
      *             @OA\Property(property="pet_image", type="string", nullable=true, example=null)
      *         )
      *     ),

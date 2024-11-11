@@ -359,7 +359,7 @@
                                             "example": null,
                                             "nullable": true
                                         },
-                                        "is_tagged": {
+                                        "is_microchipped": {
                                             "type": "boolean",
                                             "example": null,
                                             "nullable": true
@@ -368,6 +368,10 @@
                                             "type": "string",
                                             "example": null,
                                             "nullable": true
+                                        },
+                                        "is_spayed_neutered": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
                                         "pet_image": {
                                             "type": "string",
@@ -389,7 +393,7 @@
         "/pet-record/upload": {
             "post": {
                 "tags": [
-                    "PetDocuRecordsController"
+                    "Pet Document Records"
                 ],
                 "summary": "Upload a pet document",
                 "operationId": "979d896d67c8fb07a9ee72ef9608c47a",
@@ -436,7 +440,7 @@
         "/pet-record/list/{pet_id}": {
             "get": {
                 "tags": [
-                    "PetDocuRecordsController"
+                    "Pet Document Records"
                 ],
                 "summary": "Retrieve document records for a specific pet",
                 "operationId": "7b6cd007b437bc32e093c23e3adc09a9",
@@ -1076,8 +1080,8 @@
             "description": "Pet Profile"
         },
         {
-            "name": "PetDocuRecordsController",
-            "description": "PetDocuRecordsController"
+            "name": "Pet Document Records",
+            "description": "Pet Document Records"
         },
         {
             "name": "PetHealth",
