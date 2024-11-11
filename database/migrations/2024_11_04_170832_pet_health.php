@@ -11,6 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // dictionary schema
+        Schema::create('pet_allergens', function (Blueprint $table) {
+            $table->id();
+            $table->string('allergen');
+            $table->string('classification');
+            $table->string('species_affected');
+            $table->timestamps();
+        });
         // pet allergy (temporary table to hold current allergy)
         Schema::create('pet_allergy_record', function (Blueprint $table) {
             $table->id();
@@ -20,20 +28,12 @@ return new class extends Migration
             $table->unique(['pet_id','allergen_id', 'added_by']);
             $table->timestamps();
         });
-        // dictionary schema
-        Schema::create('pet_allergens', function (Blueprint $table) {
-            $table->id();
-            $table->string('allergen');
-            $table->string('classification');
-            $table->string('species_affected');
-            $table->timestamps();
-        });
         // this acts as a screenshot of the pet allergy as the pet_allergies is constantly updated.
         Schema::create('pet_allergy_history', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('data');
+            $table->foreignId('allergen_id')->constrained('pet_allergens')->onDelete('cascade');
             $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade');
+            $table->foreignId('added_by')->constrained('users')->onDelete('cascade');
             $table->timestamps(); // planning to have the client provide get the timestamp
         });
         Schema::create('pet_weight_record', function (Blueprint $table) {

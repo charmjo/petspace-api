@@ -68,6 +68,13 @@ Route::prefix('web/pet')->middleware('auth:sanctum')
             Route::post('/{petId}/weight/update/{weight}', 'updateWeight');
             Route::get('/{petId}/weight/latest', 'getLatestWeight');
             Route::get('/{petId}/weight/history-list', 'getWeightHistory');
+
+            // special conditions
+            Route::post('/{petId}/special-cond/update/{conditionId}', 'updateSpecialCondition');
+            Route::post('/{petId}/special-cond/add', 'addSpecialCondition');
+            Route::get('/{petId}/special-cond/latest', 'getSpecialConditionLatest');
+            Route::get('/{petId}/special-cond/list', 'getSpecialConditionList');
+            Route::delete('/{petId}/special-cond/{conditionId}', 'removeSpecialCondition');
         });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification
