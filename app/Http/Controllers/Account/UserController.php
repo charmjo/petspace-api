@@ -160,10 +160,28 @@ class UserController extends Controller
         // the request action holds validation so this should be okay.
         $data = $request->except('id','password','email');
 
+        // delete existing file
+        if($user->avatar_storage_path !== null) {
+            Storage::delete($user->avatar_storage_path);
+        }
+
+        // get file
+        if ($imageFile = $request->file('image')) {
+            $imageName = $imageFile->hashName();
+
+            $directory = "{$authUserId}/images";
+            Log::debug($imageFile);
+            Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
+
+            $pathToFile = $directory."/".$imageName;
+
+        }
+
         $userData = [
             "first_name" => data_get($data,'first_name'),
             "last_name" => data_get($data,'last_name'),
             "phone" => data_get($data,'phone'),
+            "avatar_storage_path"=> $pathToFile ?? null
         ];
 
         $addressData = [
@@ -174,7 +192,6 @@ class UserController extends Controller
             "city" => data_get($data,'address_city'),
         ];
 
-        $request->input('address');
 
         try {
             $user->update($userData);
