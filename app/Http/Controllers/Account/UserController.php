@@ -160,6 +160,7 @@ class UserController extends Controller
         // the request action holds validation so this should be okay.
         $data = $request->except('id','password','email');
 
+        // TODO: Clean this dirty code
         // delete existing file
         if($user->avatar_storage_path !== null) {
             Storage::delete($user->avatar_storage_path);

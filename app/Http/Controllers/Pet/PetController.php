@@ -48,6 +48,7 @@ class PetController extends Controller
         //TODO: check if the auth user matches the owner ID.
 
         // delete existing file
+        // TODO: Clean this dirty code
         if($pet->image_storage_path !== null) {
             Storage::delete($pet->image_storage_path);
         }
