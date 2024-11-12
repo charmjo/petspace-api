@@ -27,7 +27,7 @@ class PetResource extends JsonResource
             'animal_type' => $this->animal_type,
             'color' => $this->color,
             'bio' => $this->bio,
-            'is_microchipped' => $this->is_tagged,
+            'is_microchipped' => $this->is_microchipped,
             'is_spayed_neutered' => $this->is_spayed_neutered,
             'microchip_id' => $this->microchip_id,
             'pet_image' => $temporaryUrl
