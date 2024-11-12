@@ -40,36 +40,37 @@ class PetController extends Controller
 
     public function update (CreateNewPetRequest $request) {
         // find pet by id
-        $authUserId = Auth::id();
-        $petId = $request->input('id');
+        $petId = $request->input("id");
         $pet = Pet::find($petId);
+        $authUserId = Auth::id();
 
- //       dd($request->except('image'));
         //TODO: check if the auth user matches the owner ID.
 
+        $petData = [$request->validated()
+        ];
         // delete existing file
-        // TODO: Clean this dirty code
         if($pet->image_storage_path !== null) {
             Storage::delete($pet->image_storage_path);
         }
 
-        // get file
-        $imageFile = $request->file('image');
-        $imageName = $imageFile->hashName();
+        // if image key exist
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $imageName = $imageFile->hashName();
 
-        // store in directory
-        $directory = "{$authUserId}/images";
-        Log::debug($imageFile);
-        Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
+            $directory = "{$authUserId}/images";
+            Log::debug($imageFile);
+            Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
-
-        $pathToFile = $directory."/".$imageName;
+            $pathToFile = $directory."/".$imageName;
+            $petData = array_merge($petData,["avatar_storage_path"=>$pathToFile]);
+        }
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $pet->update(array_merge($request->validated()
-            ,["image_storage_path" => $pathToFile]));
+        $pet->update($petData);
 
+        //TODO: add success
         return response()->json(new PetResource($pet),200);
     }
 
@@ -186,7 +187,6 @@ class PetController extends Controller
         $imageFile = $request->file('image');
         $imageName = $imageFile->hashName();
 
-        // store in directory
         $directory = "{$authUserId}/images";
         Log::debug($imageFile);
         Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
@@ -206,5 +206,8 @@ class PetController extends Controller
     }
     // TODO: add pet picture route
     // TODO: add picture to return json
+
+
+
 }
 
