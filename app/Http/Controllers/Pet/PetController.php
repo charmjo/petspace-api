@@ -49,7 +49,7 @@ class PetController extends Controller
 
         // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
-        $pet->update($request->validated()->except("id"));
+        $pet->update($request->except("id"));
 
         //TODO: add success
         return response()->json(new PetResource($pet),200);
