@@ -26,7 +26,10 @@ class Pet extends Model
         'color',
         'gender',
         'bio',
-        'image_storage_path'
+        'image_storage_path',
+        'is_spayed_neutered',
+        'is_microchipped',
+        'microchip_id'
     ];
 
     public function user(): BelongsTo
