@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('is_booked')->default(false);
             $table->text('description')->nullable();
             $table->decimal('cost'); // I'd rather have the code format this.
-            $table->foreignId('location_id')->nullable();
+            $table->foreignId('location')->nullable();
             $table->string('service_type')->nullable();
             $table->timestamps();
         });
