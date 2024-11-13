@@ -174,7 +174,23 @@ class UserController extends Controller
             "city" => data_get($data,'address_city'),
         ];
 
-        $request->input('address');
+        // delete existing file
+        if($user->avatar_storage_path !== null) {
+            Storage::delete($user->avatar_storage_path);
+        }
+
+        if ($request->hasFile('image')) {
+            // get file
+            $imageFile = $request->file('image');
+            $imageName = $imageFile->hashName();
+
+            $directory = "{$authUserId}/images";
+            Log::debug($imageFile);
+            Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
+
+            $pathToFile = $directory."/".$imageName;
+            $userData = array_merge($userData,["avatar_storage_path"=>$pathToFile]);
+        }
 
         try {
             $user->update($userData);
