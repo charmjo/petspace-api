@@ -18,8 +18,25 @@ class PetController extends Controller
         Log::debug($request);
 
         $petOwnerId = $request->user()->id;
+        $authUserId = Auth::id();
 
-        Pet::create(array_merge($request->validated(), ['pet_owner_id' => $petOwnerId]));
+        $petData = array_merge($request->validated(), ['pet_owner_id' => $petOwnerId]);
+
+
+        // if image key exist
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $imageName = $imageFile->hashName();
+
+            $directory = "{$authUserId}/images";
+            Log::debug($imageFile);
+            Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
+
+            $pathToFile = $directory."/".$imageName;
+            $petData = array_merge($petData,["image_storage_path"=>$pathToFile]);
+        }
+
+        Pet::create($petData);
         return response()->json(["message"=>"Pet added successfully"],201);
     }
 
