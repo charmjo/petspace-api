@@ -31,7 +31,7 @@ class CreateNewPetRequest extends FormRequest
             'dob' => ['required','date'],
             'color' => ['required','string','max:100'],
             'gender' => ['required','string'],
-            'bio' => ['string','max:100'],
+            'bio' => ['string','max:600'],
             'is_spayed_neutered' => ['required','boolean'],
             'is_microchipped' => ['required','boolean'],
             'microchip_id' => ['numeric'],
