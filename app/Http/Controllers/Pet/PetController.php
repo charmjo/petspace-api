@@ -163,10 +163,13 @@ class PetController extends Controller
             ->where('pet_owner_id',$id)
             ->get();
 
+        // format retrieved data
         $pets = $pets->map(function ($item) {
+
             $pathToFile = $item->pet_image;
             $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addHour(1)) : null;
 
+            $item->animal_type = ucfirst(strtolower($item->animal_type));
             $item->pet_image=$temporaryUrl;
             return $item;
         });

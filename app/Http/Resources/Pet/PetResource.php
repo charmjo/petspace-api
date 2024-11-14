@@ -24,7 +24,7 @@ class PetResource extends JsonResource
             'breed' => $this->breed,
             'dob' => $this->dob,
             'gender' => $this->gender,
-            'animal_type' => $this->animal_type,
+            'animal_type' => ucfirst(strtolower($this->animal_type)),
             'color' => $this->color,
             'bio' => $this->bio,
             'is_microchipped' => $this->is_microchipped,
