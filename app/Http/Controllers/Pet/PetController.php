@@ -63,8 +63,7 @@ class PetController extends Controller
 
         //TODO: check if the auth user matches the owner ID.
 
-        $petData = [$request->validated()
-        ];
+        $petData = $request->validated();
         // delete existing file
         if($pet->image_storage_path !== null) {
             Storage::delete($pet->image_storage_path);
@@ -80,11 +79,9 @@ class PetController extends Controller
             Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
             $pathToFile = $directory."/".$imageName;
-            $petData = array_merge($petData,["avatar_storage_path"=>$pathToFile]);
+            $petData = array_merge($petData,["image_storage_path"=>$pathToFile]);
         }
 
-        // exclude some fields as I want another function to handle password change
-        // the request action holds validation so this should be okay.
         $pet->update($petData);
 
         //TODO: add success
