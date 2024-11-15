@@ -159,6 +159,7 @@ class PetController extends Controller
                 , 'name'
                 , 'breed'
                 ,'animal_type'
+                ,'dob'
                 ,'image_storage_path as pet_image')
             ->where('pet_owner_id',$id)
             ->get();
