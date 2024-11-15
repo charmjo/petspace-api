@@ -159,14 +159,18 @@ class PetController extends Controller
                 , 'name'
                 , 'breed'
                 ,'animal_type'
+                ,'dob'
                 ,'image_storage_path as pet_image')
             ->where('pet_owner_id',$id)
             ->get();
 
+        // format retrieved data
         $pets = $pets->map(function ($item) {
+
             $pathToFile = $item->pet_image;
             $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addHour(1)) : null;
 
+            $item->animal_type = ucfirst(strtolower($item->animal_type));
             $item->pet_image=$temporaryUrl;
             return $item;
         });
