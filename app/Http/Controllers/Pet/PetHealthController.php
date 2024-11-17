@@ -432,16 +432,15 @@ class PetHealthController extends Controller
 
     public function addSpecialCondition (Request $request, int $petId) : JsonResponse {
         // TODO: add validation
-
         $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
         $conditionName = $request->input('condition_name');
-        $conditionNote = $request->input('condition_note');
+        $conditionNote = $request->input("condition_note", null);
 
         $data = [
             'pet_id' => $petId,
             'added_by' => $authId,
-            'condition_name' => $conditionNote,
-            'condition_note' => $conditionName,
+            'condition_name' => $conditionName,
+            'condition_note' => $conditionNote,
             'created_at' => now()
         ];
 
@@ -513,7 +512,7 @@ class PetHealthController extends Controller
 
         $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
         $conditionName = $request->input('condition_name');
-        $conditionNote = $request->input("condition_note");
+        $conditionNote = $request->input("condition_note",null);
 
         $data = [
             'condition_name' => $conditionNote,

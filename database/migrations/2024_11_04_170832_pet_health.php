@@ -48,7 +48,7 @@ return new class extends Migration
             $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade');
             $table->foreignId('added_by')->constrained('users')->onDelete('cascade');
             $table->string('condition_name');
-            $table->string('condition_note');
+            $table->string('condition_note')->nullable();
             $table->timestamps(); // planning to have the client provide get the timestamp
         });
     }
