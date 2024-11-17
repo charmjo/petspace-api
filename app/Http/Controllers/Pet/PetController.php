@@ -45,7 +45,11 @@ class PetController extends Controller
 
         $pet = Pet::find($id);
 
+        $authUserId = Auth::id();
         //TODO: check if the auth user matches the owner ID.
+        if ($authUserId !== $pet->pet_owner_id) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
 
         // delete the pet,
         $pet->delete();
@@ -59,9 +63,13 @@ class PetController extends Controller
         // find pet by id
         $petId = $request->input("id");
         $pet = Pet::find($petId);
-        $authUserId = Auth::id();
+
 
         //TODO: check if the auth user matches the owner ID.
+        $authUserId = Auth::id();
+        if ($authUserId !== $pet->pet_owner_id) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
 
         $petData = $request->validated();
         // delete existing file
@@ -135,8 +143,12 @@ class PetController extends Controller
 
         // find pet by id
         $pet = Pet::find($id);
+        $authId = Auth::id();
 
         //TODO: check if the auth user matches the owner ID.
+        if ($authId !== $pet->pet_owner_id) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
 
 
         if($pet === null) {
@@ -157,6 +169,7 @@ class PetController extends Controller
                 , 'name'
                 , 'breed'
                 ,'animal_type'
+                ,'dob'
                 ,'image_storage_path as pet_image')
             ->where('pet_owner_id',$id)
             ->get();
