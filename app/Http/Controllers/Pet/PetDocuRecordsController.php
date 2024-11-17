@@ -19,7 +19,7 @@ class PetDocuRecordsController extends Controller
      * @OA\Post(
      *     path="/pet-record/upload",
      *     summary="Upload a pet document",
-     *     tags={"PetDocuRecordsController"},
+     *     tags={"Pet Document Records"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -42,7 +42,7 @@ class PetDocuRecordsController extends Controller
      */
     public function create (Request $request) : JsonResponse {
 
-
+        // TODO : validation
         // get pet id
         $petId = $request->input('pet_id');
 
@@ -95,7 +95,7 @@ class PetDocuRecordsController extends Controller
      * @OA\Get(
      *     path="/pet-record/list/{pet_id}",
      *     summary="Retrieve document records for a specific pet",
-     *     tags={"PetDocuRecordsController"},
+     *     tags={"Pet Document Records"},
      *     @OA\Parameter(
      *          name="pet_id",
      *          in="path",
@@ -143,6 +143,7 @@ class PetDocuRecordsController extends Controller
      */
     // send a pet id in the request
     public function getList ($id) : JsonResponse {
+        // TODO: validation
         $petId = $id;
 
         // Check if authorized

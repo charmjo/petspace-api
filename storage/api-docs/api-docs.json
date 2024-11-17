@@ -946,73 +946,13 @@
                 }
             }
         },
-        "pet/{petId}/weight/history-list": {
-            "get": {
-                "tags": [
-                    "PetHealth"
-                ],
-                "summary": "Retrieve the pet weight history",
-                "description": "Returns latest weight data",
-                "operationId": "getPetWeightHistory",
-                "parameters": [
-                    {
-                        "name": "petId",
-                        "in": "path",
-                        "description": "ID of the pet",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "A list of weight records",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "weight": {
-                                            "description": "pet weight in kilograms",
-                                            "type": "number",
-                                            "format": "decimal",
-                                            "example": "3.5"
-                                        },
-                                        "added_by_first_name": {
-                                            "type": "string",
-                                            "example": "Steve"
-                                        },
-                                        "added_by_last_name": {
-                                            "type": "string",
-                                            "example": "Tester"
-                                        },
-                                        "created_at": {
-                                            "type": "timestamp",
-                                            "example": "2024-11-07 21:52:28"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Pet not found"
-                    }
-                }
-            }
-        },
-        "pet/{petId}/weight/latest": {
+        "/pet/{petId}/weight/latest": {
             "get": {
                 "tags": [
                     "PetHealth"
                 ],
                 "summary": "Retrieve pet's latest weight",
-                "description": "Returns data for pet's latest weight and who added them",
+                "description": "Returns data for pet's latest weight and the user who added it.",
                 "operationId": "getPetWeightLatest",
                 "parameters": [
                     {
@@ -1027,44 +967,346 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list of weight records",
+                        "description": "Pet's latest weight record retrieved successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "weight": {
-                                                "description": "pet weight in kilograms",
-                                                "type": "number",
-                                                "format": "decimal",
-                                                "example": "3.5"
-                                            },
-                                            "added_by_first_name": {
-                                                "type": "string",
-                                                "example": "Steve"
-                                            },
-                                            "added_by_last_name": {
-                                                "type": "string",
-                                                "example": "Tester"
-                                            },
-                                            "created_at": {
-                                                "type": "timestamp",
-                                                "example": "2024-11-07 21:52:28"
-                                            }
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
                                         },
-                                        "type": "object"
-                                    }
+                                        "weight": {
+                                            "description": "Pet weight in kilograms",
+                                            "type": "number",
+                                            "format": "decimal",
+                                            "example": "3.5"
+                                        },
+                                        "added_by_first_name": {
+                                            "type": "string",
+                                            "example": "Steve"
+                                        },
+                                        "added_by_last_name": {
+                                            "type": "string",
+                                            "example": "Tester"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-11-07T21:52:28Z"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
                     "404": {
                         "description": "Pet not found"
+                    }
+                }
+            }
+        },
+        "/pet/{petId}/special-cond/update/{conditionId}": {
+            "post": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Update a special condition for a pet",
+                "description": "Updates a specific special condition for a pet by condition ID.",
+                "operationId": "updatePetSpecialCondition",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "conditionId",
+                        "in": "path",
+                        "description": "ID of the special condition",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 4
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Special condition details to be updated",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "condition_name": {
+                                        "type": "string",
+                                        "example": "Not ticks"
+                                    },
+                                    "condition_note": {
+                                        "type": "string",
+                                        "example": "More ticksss"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Special condition updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Special condition updated successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet or special condition not found"
+                    }
+                }
+            }
+        },
+        "/pet/{petId}/special-cond/{conditionId}": {
+            "delete": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Delete a special condition for a pet",
+                "description": "Deletes a specific special condition for a pet by its condition ID.",
+                "operationId": "deletePetSpecialCondition",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "conditionId",
+                        "in": "path",
+                        "description": "ID of the special condition",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Special condition removed successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Special condition removed successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet or special condition not found"
+                    }
+                }
+            }
+        },
+        "/pet/{petId}/special-cond/list": {
+            "get": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Get special conditions for a pet",
+                "description": "Retrieves a list of special conditions for a pet, including the condition name, note, and details of the user who added it.",
+                "operationId": "getPetSpecialConditions",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Special condition retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Special condition retrieved successfully."
+                                        },
+                                        "list": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "pet_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "added_by": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "condition_name": {
+                                                        "type": "string",
+                                                        "example": "Has a LOT ticks"
+                                                    },
+                                                    "condition_note": {
+                                                        "type": "string",
+                                                        "example": "Ticks"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-11-10 02:59:06"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    },
+                                                    "added_by_first_name": {
+                                                        "type": "string",
+                                                        "example": "Steve"
+                                                    },
+                                                    "added_by_last_name": {
+                                                        "type": "string",
+                                                        "example": "Tester"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            }
+        },
+        "/pet/{petId}/special-cond/latest": {
+            "get": {
+                "tags": [
+                    "PetHealth"
+                ],
+                "summary": "Get the latest special condition for a pet",
+                "description": "Retrieves the latest special condition for a pet, including the condition details and the user who added it.",
+                "operationId": "getLatestPetSpecialCondition",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Special condition retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Special condition retrieved successfully."
+                                        },
+                                        "condition": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pet_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "added_by": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "condition_name": {
+                                                    "type": "string",
+                                                    "example": "Has a LOT ticks"
+                                                },
+                                                "condition_note": {
+                                                    "type": "string",
+                                                    "example": "Ticks"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-11-10 02:59:06"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "added_by_first_name": {
+                                                    "type": "string",
+                                                    "example": "Steve"
+                                                },
+                                                "added_by_last_name": {
+                                                    "type": "string",
+                                                    "example": "Tester"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet or special condition not found"
                     }
                 }
             }

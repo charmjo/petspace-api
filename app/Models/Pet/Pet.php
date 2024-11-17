@@ -42,8 +42,8 @@ class Pet extends Model
         return $this->HasMany(PetDocuRecords::class, 'pet_id');
     }
 
-    public static function retrievePetAllergenList ($petId) : Collection {
-        return DB::table('pet_allergy_record as par')
+    public static function retrievePetAllergen (int $petId, bool $isList = false) {
+        $query = DB::table('pet_allergy_record as par')
         ->leftJoin('pet_allergens as pa', 'pa.id', '=', 'par.allergen_id')
         ->leftJoin('users as user', 'user.id', '=', 'par.added_by')
         ->where('par.pet_id',$petId)
@@ -55,29 +55,49 @@ class Pet extends Model
             ,'user.last_name as added_by_last_name'
             ,'user.role as added_by_role'
         )
-        ->get();
+        ->orderBy('par.created_at', 'desc');
+
+        if ($isList) {
+           return $query->get();
+        }
+
+        // this retrieves the latest entry
+        return $query->orderBy('par.created_at', 'desc')
+                    ->first();
     }
 
-    public static function retrieveLatestWeight($petId) {
-        return DB::table('pet_weight_record as pwr')
+    public static function retrieveWeight(int $petId, bool $isList = false) {
+        $query = DB::table('pet_weight_record as pwr')
             ->where('pwr.pet_id', $petId)
             ->select('weight'
                 ,'users.first_name as added_by_first_name'
                 ,'users.last_name as added_by_last_name')
             ->leftJoin('users','pwr.added_by','=','users.id')
-            ->orderBy('pwr.created_at', 'desc')
-            ->first();
+            ->orderBy('pwr.created_at', 'desc');
+
+        if ($isList) {
+            return $query->get();
+        }
+
+        // this retrieves the latest entry
+        return $query->first();
     }
 
-    public static function retrieveWeightHistory($petId) : Collection {
-        return DB::table('pet_weight_record as pwr')
-            ->where('pwr.pet_id', $petId)
-            ->select('weight'
+    public static function retrieveSpecialCond( int $petId, bool $isList = false) {
+        $query = DB::table('pet_special_conditions_record as cond')
+            ->where('cond.pet_id', $petId)
+            ->select('cond.*'
                 ,'users.first_name as added_by_first_name'
-                ,'users.last_name as added_by_last_name'
-                ,'pwr.created_at as created_at')
-            ->leftJoin('users','pwr.added_by','=','users.id')
-            ->orderBy('pwr.created_at', 'desc')
-            ->get();
+                ,'users.last_name as added_by_last_name')
+            ->leftJoin('users','cond.added_by','=','users.id')
+            ->orderBy('cond.created_at', 'desc');
+
+
+        if ($isList) {
+            return $query->get();
+        }
+
+        // this retrieves the latest entry
+        return $query->first();
     }
 }
