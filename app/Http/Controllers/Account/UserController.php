@@ -67,11 +67,11 @@ class UserController extends Controller
         // TODO: place this in a controller this is so unholy.
         $authUserId = Auth::id();
         $userDetail = User::with('address')
-                            -> withCount('pets')
-                            ->findOrFail($authUserId);
+            -> withCount('pets')
+            ->findOrFail($authUserId);
 
         return response()->json(new UserResource($userDetail),
-        200);
+            200);
     }
     // I want to perform soft deletion just to keep the data for stats or to prevent doing something irreversible at the expense of the db.
     public function deleteUser ($id) {
@@ -156,7 +156,7 @@ class UserController extends Controller
         $authUserId = Auth::id();
         $user = User::find($authUserId);
 
-       // exclude some fields as I want another function to handle password change
+        // exclude some fields as I want another function to handle password change
         // the request action holds validation so this should be okay.
         $data = $request->except('id','password','email');
 
@@ -174,12 +174,13 @@ class UserController extends Controller
             "city" => data_get($data,'address_city'),
         ];
 
-        // delete existing file
-        if($user->avatar_storage_path !== null) {
-            Storage::delete($user->avatar_storage_path);
-        }
 
         if ($request->hasFile('image')) {
+            // delete existing file
+            if($user->avatar_storage_path !== null) {
+                Storage::delete($user->avatar_storage_path);
+            }
+
             // get file
             $imageFile = $request->file('image');
             $imageName = $imageFile->hashName();
