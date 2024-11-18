@@ -27,8 +27,6 @@ return new class extends Migration
             $table->enum('status', ['pending', 'confirmed', 'completed', 'canceled'])->default('pending');
             $table->timestamp('request_date')->nullable();
             $table->timestamp('request_updated_date')->nullable();
-            $table->date('appointment_date');
-            $table->time('appointment_time');
 
             // Optional: Tracks when the appointment was confirmed or canceled
             $table->timestamp('confirmed_at')->nullable();
@@ -48,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking');
+        Schema::dropIfExists('appointments');
     }
 };
