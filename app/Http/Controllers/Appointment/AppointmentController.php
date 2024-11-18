@@ -122,7 +122,7 @@ class AppointmentController extends Controller
      *     )
      * )
      */
-    public function getAvailableSchedule ($vetId) {
+    public function getAvailableSchedule ($petId,$vetId) {
         return response()->json(Veterinarian::getAvailableSchedule($vetId));
     }
 
