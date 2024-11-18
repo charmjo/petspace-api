@@ -298,6 +298,317 @@
                 }
             }
         },
+        "/pet/{petId}/appointment/veterinarians": {
+            "get": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Get list of veterinarians for a pet appointment",
+                "description": "Retrieves a list of veterinarians available for a specific pet's appointment.",
+                "operationId": "getVeterinarians",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "The ID of the pet to fetch the veterinarians for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of veterinarians for the pet's appointment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "Veterinarian ID",
+                                                "type": "integer"
+                                            },
+                                            "first_name": {
+                                                "description": "Veterinarian's first name",
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "description": "Veterinarian's last name",
+                                                "type": "string"
+                                            },
+                                            "professional_title": {
+                                                "description": "Veterinarian's professional title",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid pet ID supplied"
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "pet/{petId}/appointment/vet-schedule/{scheduleId}": {
+            "get": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Get veterinarian schedule for a pet appointment",
+                "description": "Retrieves the details of a specific veterinarian's schedule for a pet appointment, including service provider, schedule time, and cost.",
+                "operationId": "getVeterinarianSchedule",
+                "parameters": [
+                    {
+                        "name": "petId",
+                        "in": "path",
+                        "description": "The ID of the pet to fetch the veterinarian schedule for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "scheduleId",
+                        "in": "path",
+                        "description": "The ID of the veterinarian schedule",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of available veterinarian schedules for the pet's appointment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "The unique ID of the veterinarian schedule",
+                                                "type": "integer"
+                                            },
+                                            "user_id": {
+                                                "description": "The ID of the user (veterinarian)",
+                                                "type": "integer"
+                                            },
+                                            "service_company_provider_name": {
+                                                "description": "The name of the veterinary service provider",
+                                                "type": "string"
+                                            },
+                                            "schedule_date": {
+                                                "description": "The date of the appointment",
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "start_time": {
+                                                "description": "The start time of the appointment",
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "end_time": {
+                                                "description": "The end time of the appointment",
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "is_booked": {
+                                                "description": "Whether the appointment is booked",
+                                                "type": "boolean"
+                                            },
+                                            "description": {
+                                                "description": "The description of the appointment",
+                                                "type": "string"
+                                            },
+                                            "cost": {
+                                                "description": "The cost of the appointment",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "location": {
+                                                "description": "The location of the veterinary service provider",
+                                                "type": "string"
+                                            },
+                                            "service_type": {
+                                                "description": "The type of veterinary service (e.g., checkup, emergency care)",
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "description": "When the schedule was created",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "description": "When the schedule was last updated",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid pet ID or schedule ID supplied"
+                    },
+                    "404": {
+                        "description": "Pet or schedule not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/pet/{pet_id}/appointment": {
+            "post": {
+                "tags": [
+                    "appointments"
+                ],
+                "summary": "Create an appointment",
+                "description": "Creates or updates an appointment for a pet, including notes and schedule.",
+                "operationId": "createOrUpdateAppointment",
+                "parameters": [
+                    {
+                        "name": "pet_id",
+                        "in": "path",
+                        "description": "ID of the pet for which the appointment is being created",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "schedule_id",
+                                    "notes"
+                                ],
+                                "properties": {
+                                    "schedule_id": {
+                                        "description": "The ID of the schedule",
+                                        "type": "integer"
+                                    },
+                                    "notes": {
+                                        "description": "Additional notes for the appointment",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Appointment created/updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "The ID of the appointment",
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "description": "The status of the appointment (confirmed)",
+                                            "type": "string"
+                                        },
+                                        "schedule_id": {
+                                            "description": "The ID of the associated schedule",
+                                            "type": "integer"
+                                        },
+                                        "request_date": {
+                                            "description": "The request date and time of the appointment",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "confirmed_at": {
+                                            "description": "The confirmation date and time",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "canceled_at": {
+                                            "description": "The cancellation date and time, if applicable",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "notes": {
+                                            "description": "The notes for the appointment",
+                                            "type": "string"
+                                        },
+                                        "provider_first_name": {
+                                            "description": "The first name of the provider",
+                                            "type": "string"
+                                        },
+                                        "provider_last_name": {
+                                            "description": "The last name of the provider",
+                                            "type": "string"
+                                        },
+                                        "service_company_provider_name": {
+                                            "description": "The name of the service provider company",
+                                            "type": "string"
+                                        },
+                                        "location": {
+                                            "description": "The location of the appointment",
+                                            "type": "string"
+                                        },
+                                        "schedule_date": {
+                                            "description": "The scheduled date of the appointment",
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "start_time": {
+                                            "description": "The start time of the appointment",
+                                            "type": "string",
+                                            "format": "time"
+                                        },
+                                        "end_time": {
+                                            "description": "The end time of the appointment",
+                                            "type": "string",
+                                            "format": "time"
+                                        },
+                                        "service_type": {
+                                            "description": "The type of service",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input, appointment could not be created"
+                    },
+                    "404": {
+                        "description": "Pet or schedule not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/pet/pet-detail/{petId}": {
             "get": {
                 "tags": [
@@ -1316,6 +1627,14 @@
         {
             "name": "Account",
             "description": "Account"
+        },
+        {
+            "name": "Appointments",
+            "description": "Appointments"
+        },
+        {
+            "name": "appointments",
+            "description": "appointments"
         },
         {
             "name": "Pet Profile",

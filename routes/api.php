@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Account\MemberController;
 use App\Http\Controllers\Account\UserController;
+use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\Auth\UserMobileController;
 use App\Http\Controllers\Pet\PetController;
 use App\Http\Controllers\Pet\PetDocuRecordsController;
@@ -96,4 +97,20 @@ Route::prefix('pet')->middleware('auth:sanctum')
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
 //     ->middleware(['signed'])
 //     ->name('verification.verify');
+Route::prefix('pet/{petId}/appointment')->middleware('auth:sanctum')
+    ->controller(AppointmentController::class)
+    ->group(
+        function () {
+            // pet allergy
+            Route::get('/veterinarians', 'getAvailableVeterinarian');
+            Route::get('/vet-schedule/{vetId}', 'getAvailableSchedule');
+            Route::post('/create-appointment', 'createAppointment');
+            Route::get('/list', 'getAppointmentList');
+            Route::get('/detail/{appointmentId}', 'getAppointment');
+            Route::post('/reschedule/{id}', 'rescheduleAppointment');
+            Route::post('/cancel/{appointmentId}', 'cancelAppointment');
+        });
 
+Route::get('/storage/{path}', function ($path) {
+    return response()->file(storage_path('app/public/' . $path));
+})->where('path', '.*');

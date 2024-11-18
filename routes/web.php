@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Account\MemberController;
 use App\Http\Controllers\Account\UserController;
+use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\Pet\PetController;
 use App\Http\Controllers\Pet\PetDocuRecordsController;
 use App\Http\Controllers\Pet\PetHealthController;
@@ -75,6 +76,20 @@ Route::prefix('web/pet')->middleware('auth:sanctum')
             Route::get('/{petId}/special-cond/latest', 'getSpecialConditionLatest');
             Route::get('/{petId}/special-cond/list', 'getSpecialConditionList');
             Route::delete('/{petId}/special-cond/{conditionId}', 'removeSpecialCondition');
+        });
+
+Route::prefix('web/pet/{petId}/appointment')->middleware('auth:sanctum')
+    ->controller(AppointmentController::class)
+    ->group(
+        function () {
+            // pet allergy
+            Route::get('/veterinarians', 'getAvailableVeterinarian');
+            Route::get('/vet-schedule/{vetId}', 'getAvailableSchedule');
+            Route::post('/create-appointment', 'createAppointment');
+            Route::get('/list', 'getAppointmentList');
+            Route::get('/detail/{appointmentId}', 'getAppointment');
+            Route::post('/reschedule/{id}', 'rescheduleAppointment');
+            Route::post('/cancel/{appointmentId}', 'cancelAppointment');
         });
 
 //WILL IMPLEMENT ONCE FUNCTIONALITIES ARE DONE - email verification

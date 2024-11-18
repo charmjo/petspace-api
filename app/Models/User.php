@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Account\Address;
 use App\Models\Account\ProfessionalInformation;
+use App\Models\Appointment\Schedule;
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetDocuRecords;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -79,11 +80,6 @@ class User extends Authenticatable
     public function docuRecords(): HasMany
     {
         return $this->hasMany(PetDocuRecords::class,'user_id');
-    }
-
-    public function professionalInformation() : HasOne
-    {
-        return $this->hasOne(ProfessionalInformation::class, 'vet_id'); // Assuming `vet_id` is the foreign key in `professional_information` table
     }
 
     public function loadWithOtherModels () {
