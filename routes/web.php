@@ -78,7 +78,7 @@ Route::prefix('web/pet')->middleware('auth:sanctum')
             Route::delete('/{petId}/special-cond/{conditionId}', 'removeSpecialCondition');
         });
 
-Route::prefix('pet/{petId}/appointment')->middleware('auth:sanctum')
+Route::prefix('web/pet/{petId}/appointment')->middleware('auth:sanctum')
     ->controller(AppointmentController::class)
     ->group(
         function () {
