@@ -30,8 +30,14 @@ class ScheduleSeeder extends Seeder
         foreach ($veterinarians as $vet) {
             foreach (range(1, 5) as $index) { // 5 schedules per vet
                 $startHour = $faker->numberBetween(8, 17); // Start between 8 a.m. and 5 p.m.
-                $startTime = $faker->dateTimeBetween("today {$startHour}:00", "today {$startHour}:30")->format('H:i:s');
-                $endTime = date('H:i:s', strtotime($startTime . ' +1 hour')); // End time 1 hour later
+                $startMinutes = [15, 30, 45]; // Allowed start minutes
+                $minute = $faker->randomElement($startMinutes);
+
+                // Format the start time
+                $startTime = sprintf('%02d:%02d:00', $startHour, $minute);
+
+                // End time is 1 hour later
+                $endTime = date('H:i:s', strtotime($startTime . ' +1 hour'));
 
                 $location = $faker->randomElement($waterlooLocations);
 
