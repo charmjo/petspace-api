@@ -44,7 +44,7 @@ class ScheduleSeeder extends Seeder
                     'is_booked' => $faker->boolean(30), // 70% chance the slot is booked
                     'description' => 'Appointment for veterinary service in Waterloo, Ontario.',
                     'cost' => $faker->randomElement([75, 100, 150, 200, 250]), // Realistic costs
-                    'location' => $location['id'], // Set based on Waterloo locations
+                    'location' => $location['address'], // Set based on Waterloo locations
                     'service_type' => $faker->randomElement(['Checkup', 'Vaccination', 'Surgery', 'Emergency Care']),
                     'created_at' => now(),
                     'updated_at' => now(),

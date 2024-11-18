@@ -97,7 +97,7 @@ Route::prefix('pet')->middleware('auth:sanctum')
 // Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class,'verify'] )
 //     ->middleware(['signed'])
 //     ->name('verification.verify');
-Route::prefix('pet/appointment')->middleware('auth:sanctum')
+Route::prefix('pet/{petId}/appointment')->middleware('auth:sanctum')
     ->controller(AppointmentController::class)
     ->group(
         function () {
@@ -105,9 +105,10 @@ Route::prefix('pet/appointment')->middleware('auth:sanctum')
             Route::get('/veterinarians', 'getAvailableVeterinarian');
             Route::get('/vet-schedule/{vetId}', 'getAvailableSchedule');
             Route::post('/create-appointment', 'createAppointment');
-            Route::get('/{id}/allergies', 'getPetAllergenList');
-            Route::delete('/{petId}/allergy/remove/{allergenId}', 'removePetAllergen');
-
+            Route::get('/list', 'getAppointmentList');
+            Route::get('/detail/{appointmentId}', 'getAppointment');
+            Route::post('/reschedule/{id}', 'rescheduleAppointment');
+            Route::post('/cancel/{appointmentId}', 'cancelAppointment');
         });
 
 Route::get('/storage/{path}', function ($path) {
