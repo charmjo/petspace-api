@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pet;
 use App\Http\Controllers\Controller;
 use App\Models\Pet\Allergen;
 use App\Models\Pet\Pet;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -109,14 +110,20 @@ class PetHealthController extends Controller
 
         //TODO: validate PARAMETERS
         // get the pet and the allergen id
-        $loggedInUserId = Auth::id();
 
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
 
         // TODO: authorization of pet_owner and vet
         $data = [
             'pet_id' => $petId,
             'allergen_id' => $allergenId,
-            'added_by' => $loggedInUserId,
+            'added_by' => $authId,
             'created_at' => now()
         ];
 
@@ -132,7 +139,7 @@ class PetHealthController extends Controller
                     ->select('allergen_id', 'pet_id','added_by'
                         , DB::raw("'".now()."' as created_at"))  // I do not like raw but this is a necessary evil until I figure out how to implement views
                     ->where('pet_id', $petId)
-                    ->where('added_by', $loggedInUserId)// Add condition if needed
+                    ->where('added_by', $authId)// Add condition if needed
             );
         } catch (QueryException $e) {
             Log::debug($e->getMessage());
@@ -207,15 +214,15 @@ class PetHealthController extends Controller
         // TODO: validate parameters
 
 
-        $authUserId = Auth::id();
-
         // TODO: place this somewhere to centralize this checking code
-        // find pet by id
+        // Validate access for pet owners and family members
         $pet = Pet::find($petId);
-
-        if ($authUserId !== $pet->pet_owner_id) {
-            return response()->json(["error"=>"You are not authorized"],403);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
         }
+
         // delete pet allergen
         DB::table('pet_allergy_record')
             ->where('allergen_Id', $petAllergenId)
@@ -228,7 +235,7 @@ class PetHealthController extends Controller
             ->select('allergen_id', 'pet_id','added_by'
                 , DB::raw("'".now()."' as created_at"))  // I do not like raw but this is a necessary evil until I figure out how to implement views
             ->where('pet_id', $petId)
-                ->where('added_by', $authUserId)// Add condition if needed
+                ->where('added_by', $authId)// Add condition if needed
         );
         // get the pet allergy id
         // remove the allergen
@@ -344,8 +351,14 @@ class PetHealthController extends Controller
     public function updateWeight(int $petId, int $weight) : JsonResponse {
        // TODO: validate parameters
 
-        // add the weight
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
         $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
         $data = [
             'pet_id' => $petId,
             'added_by' => $authId,
@@ -409,6 +422,15 @@ class PetHealthController extends Controller
     public function getLatestWeight(int $petId) : JsonResponse {
         // TODO: validate parameters
          // add the the weight
+
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
         $result = Pet::retrieveWeight($petId);
 
         return response()->json(
@@ -420,7 +442,15 @@ class PetHealthController extends Controller
 
     public function getWeightHistory(int $petId) {
         // TODO: validate parameters
-         // add the weight
+
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
         $result = Pet::retrieveWeight($petId,true);
         return $result !== null?
             response()->json([
@@ -432,7 +462,16 @@ class PetHealthController extends Controller
 
     public function addSpecialCondition (Request $request, int $petId) : JsonResponse {
         // TODO: add validation
-        $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
+        //TODO: can be doctor or pet_owner will have to discuss with Mariana
+
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
         $conditionName = $request->input('condition_name');
         $conditionNote = $request->input("condition_note", null);
 
@@ -510,7 +549,14 @@ class PetHealthController extends Controller
     public function updateSpecialCondition (Request $request, int $petId, int $conditionId) : JsonResponse {
         // TODO: add validation
 
-        $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
         $conditionName = $request->input('condition_name');
         $conditionNote = $request->input("condition_note",null);
 
@@ -580,7 +626,15 @@ class PetHealthController extends Controller
     public function removeSpecialCondition (int $petId, int $conditionId) : JsonResponse {
         // TODO: add validation
 
-        $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
+        //TODO: can be doctor or pet_owner will have to discuss with Mariana
+
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
 
         try {
             DB::table('pet_special_conditions_record')
@@ -645,7 +699,15 @@ class PetHealthController extends Controller
     public function getSpecialConditionList ($petId) : JsonResponse {
         // TODO: add validation
 
-        $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
+        //TODO: can be doctor or pet_owner will have to discuss with Mariana
+
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
 
         $list = Pet::retrieveSpecialCond($petId, true);
         return response()->json([
@@ -705,7 +767,15 @@ class PetHealthController extends Controller
     public function getSpecialConditionLatest ($petId) : JsonResponse {
         // TODO: add validation
 
-        $authId = Auth::id(); //TODO: can be doctor or pet_owner will have to discuss with Mariana
+       //TODO: can be doctor or pet_owner will have to discuss with Mariana
+        // Validate access for pet owners and family members
+        $pet = Pet::find($petId);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
 
         $condition = Pet::retrieveSpecialCond($petId, false);
         return response()->json([

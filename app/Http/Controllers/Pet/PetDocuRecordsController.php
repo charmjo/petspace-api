@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Pet\PetDocuRecordResource;
 use App\Models\Pet\Pet;
 use App\Models\Pet\PetDocuRecords;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,8 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PetDocuRecordsController extends Controller
 {
-
-
 
     /**
      * @OA\Post(
@@ -47,21 +46,19 @@ class PetDocuRecordsController extends Controller
         $petId = $request->input('pet_id');
 
         // get logged user
-        $authUserId = Auth::id();
-
-        // check if user has access
-        // find pet by id
+        // Validate access for pet owners and family members
         $pet = Pet::find($petId);
-
-        if ($authUserId !== $pet->pet_owner_id) {
-            return response()->json(["error"=>"You are not authorized"],403);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
         }
 
         // get file
         $file = $request->file('document');
         $fileName = $file->hashName();
 
-        $directory = "{$authUserId}/documents";
+        $directory = "{$pet->pet_owner_id}/documents";
         Storage::disk('local')->putFileAs($directory, $file,$fileName);
 
         $pathToFile = $directory."/".$fileName;
@@ -70,7 +67,7 @@ class PetDocuRecordsController extends Controller
         //
         $record = new PetDocuRecords();
         $record->pet_id = $petId;
-        $record->added_by = $authUserId;
+        $record->added_by = $authId;
         $record->record_path = $pathToFile;
         $record->filename = $request->input("filename");
         $record->date_added = $request->input("date_added");
@@ -147,14 +144,12 @@ class PetDocuRecordsController extends Controller
         $petId = $id;
 
         // Check if authorized
-        // get logged user
-        $authUserId = Auth::id();
+        // Validate access for pet owners and family members
         $pet = Pet::find($petId);
-
-        // check if user has access
-        // TODO: change this when pet links are added
-        if ($authUserId !== $pet->pet_owner_id) {
-            return response()->json(["error"=>"You are not authorized"],403);
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
         }
 
         // get all records associated to the pet
