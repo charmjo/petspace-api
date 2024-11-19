@@ -27,6 +27,7 @@ class PetDocuRecordResource extends JsonResource
             'record_path' => $temporaryUrl,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'filename'=>$this->filename
         ];
     }
 }
