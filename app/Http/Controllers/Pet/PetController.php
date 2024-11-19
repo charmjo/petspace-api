@@ -48,7 +48,7 @@ class PetController extends Controller
 
         $authId = Auth::id();
         //TODO: check if the auth user matches the owner ID.
-        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
         if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }
@@ -69,7 +69,7 @@ class PetController extends Controller
 
         //TODO: check if the auth user matches the owner ID.
         $authId = Auth::id();
-        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
         if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }
@@ -150,11 +150,10 @@ class PetController extends Controller
         $authId = Auth::id();
 
         //TODO: check if the auth user matches the owner ID.
-        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
         if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }
-
 
         if($pet === null) {
             return response()->json(["error"=>"Pet not found"],404);
@@ -231,7 +230,7 @@ class PetController extends Controller
         // find pet by id
         $pet = Pet::find($id);
 
-        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        $mainMembers = User::getFamilyMembers($pet->pet_owner_id);
         if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }

@@ -117,6 +117,7 @@ class User extends Authenticatable
         return $results;
     }
 
+    // gets the parent/main account id
     public static function getMainFamilyMembers ($memberId) : array {
         $mainUsers = DB::table('user_family')
             ->where('family_member_id',$memberId)
@@ -129,6 +130,22 @@ class User extends Authenticatable
 
         return $mainUserIds;
     }
+
+    // gets the family members
+    // TODO: transfer to a policy
+    public static function getFamilyMembers ($memberId) : array {
+        $members = DB::table('user_family')
+            ->where('main_user_id',$memberId)
+            ->get();
+
+        $memberIds = [];
+        foreach ($members as $member) {
+            array_push($memberIds, $member->family_member_id);
+        }
+
+        return $memberIds;
+    }
+
 
 
 }
