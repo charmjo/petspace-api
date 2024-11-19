@@ -80,6 +80,7 @@ class PetDocuRecordsController extends Controller
         return response()->json([
             'message' => "Document uploaded successfully",
             'document_url' => $url,
+            'filename' => $record->filename
         ],201);
 
     }
