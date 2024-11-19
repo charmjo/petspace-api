@@ -116,4 +116,19 @@ class User extends Authenticatable
 
         return $results;
     }
+
+    public static function getMainFamilyMembers ($memberId) : array {
+        $mainUsers = DB::table('user_family')
+            ->where('family_member_id',$memberId)
+            ->get();
+
+        $mainUserIds = [];
+        foreach ($mainUsers as $mainUser) {
+            array_push($mainUserIds, $mainUser->main_user_id);
+        }
+
+        return $mainUserIds;
+    }
+
+
 }
