@@ -46,9 +46,10 @@ class PetController extends Controller
 
         $pet = Pet::find($id);
 
-        $authUserId = Auth::id();
+        $authId = Auth::id();
         //TODO: check if the auth user matches the owner ID.
-        if ($authUserId !== $pet->pet_owner_id) {
+        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }
 
@@ -67,8 +68,9 @@ class PetController extends Controller
 
 
         //TODO: check if the auth user matches the owner ID.
-        $authUserId = Auth::id();
-        if ($authUserId !== $pet->pet_owner_id) {
+        $authId = Auth::id();
+        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }
 
@@ -83,7 +85,7 @@ class PetController extends Controller
             $imageFile = $request->file('image');
             $imageName = $imageFile->hashName();
 
-            $directory = "{$authUserId}/images";
+            $directory = "{$pet->pet_owner_id}/images";
             Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
             $pathToFile = $directory."/".$imageName;
             $petData = array_merge($petData,["image_storage_path"=>$pathToFile]);
@@ -148,7 +150,8 @@ class PetController extends Controller
         $authId = Auth::id();
 
         //TODO: check if the auth user matches the owner ID.
-        if ($authId !== $pet->pet_owner_id) {
+        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
             return response()->json(['message' => 'Not found'], 404);
         }
 
@@ -163,21 +166,43 @@ class PetController extends Controller
 
     // will need to put this, will need user id. The user ID can be derived from this list
     public function getList (Request $request) {
-        $id = Auth::id();
-        //TODO: will need to add linked pets if id is linked to another account to view pet data. kani, I still have to think how to write this logic..
+        $authId = Auth::id();
 
-        // will all picture here in the near future...
+
         $pets = Pet::select('id'
             , 'name'
             , 'breed'
             ,'animal_type'
             ,'dob'
             ,'image_storage_path as pet_image')
-            ->where('pet_owner_id',$id)
+            ->where('pet_owner_id',$authId)
             ->get();
 
-        // format retrieved data
+        // get linked pets, this is for many-to-many relationships
+        $mainUserIds = User::getMainFamilyMembers(Auth::id());
+
+        $linkedPets = Pet::select('id'
+            , 'name'
+            , 'breed'
+            ,'animal_type'
+            ,'dob'
+            ,'image_storage_path as pet_image')
+            ->whereIn('pet_owner_id',$mainUserIds)
+            ->get();
+
+        // format retrieved data pets
         $pets = $pets->map(function ($item) {
+
+            $pathToFile = $item->pet_image;
+            $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addHour(1)) : null;
+
+            $item->animal_type = ucfirst(strtolower($item->animal_type));
+            $item->pet_image=$temporaryUrl;
+            return $item;
+        });
+
+        // format retrieved data linked pets
+        $linkedPets = $linkedPets->map(function ($item) {
 
             $pathToFile = $item->pet_image;
             $temporaryUrl = $pathToFile ? Storage::temporaryUrl($pathToFile, now()->addHour(1)) : null;
@@ -190,7 +215,7 @@ class PetController extends Controller
         return response()->json(
             [
                 "pets_owned"=>$pets,
-                "linked_pets"=>[]
+                "linked_pets"=>$linkedPets
             ],200);
     }
 
@@ -199,15 +224,16 @@ class PetController extends Controller
         $id = $request->input('pet_id');
 
         // get logged user
-        $authUserId = Auth::id();
+        $authId = Auth::id();
 
         // TODO: place this somewhere to centralize this checking code
         // check if user has access
         // find pet by id
         $pet = Pet::find($id);
 
-        if ($authUserId !== $pet->pet_owner_id) {
-            return response()->json(["error"=>"You are not authorized"],403);
+        $mainMembers = User::getMainFamilyMembers($pet->pet_owner_id);
+        if ($authId !== $pet->pet_owner_id && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => 'Not found'], 404);
         }
 
         // delete existing file
@@ -219,7 +245,7 @@ class PetController extends Controller
         $imageFile = $request->file('image');
         $imageName = $imageFile->hashName();
 
-        $directory = "{$authUserId}/images";
+        $directory = "{$pet->pet_owner_id}/images";
         Log::debug($imageFile);
         Storage::disk('local')->putFileAs($directory, $imageFile,$imageName);
 
@@ -238,8 +264,5 @@ class PetController extends Controller
     }
     // TODO: add pet picture route
     // TODO: add picture to return json
-
-
-
 }
 
