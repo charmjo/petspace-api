@@ -39,7 +39,6 @@ class Appointment extends Model
                 'schedules.schedule_date',
                 'schedules.start_time',
                 'schedules.end_time',
-                'schedules.service_type',
             ])
             ->leftJoin('users', 'app.user_id', '=', 'users.id')
             ->leftJoin('schedules', 'app.schedule_id', '=', 'schedules.id')
@@ -69,7 +68,6 @@ class Appointment extends Model
                 'schedules.schedule_date',
                 'schedules.start_time',
                 'schedules.end_time',
-                'schedules.service_type',
             ])
             ->leftJoin('users', 'app.user_id', '=', 'users.id')
             ->leftJoin('schedules', 'app.schedule_id', '=', 'schedules.id')
