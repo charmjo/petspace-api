@@ -68,7 +68,7 @@ Route::prefix('pet-record')->middleware('auth:sanctum')
     function () {
         Route::post('/upload', 'create');
         Route::get('/list/{id}', 'getList');
-        Route::delete('/delete/{id}', 'delete');
+        Route::delete('/delete/{documentId}', 'delete');
     });
 
 // pet health
