@@ -111,7 +111,7 @@ class PetDocuRecordsController extends Controller
         // delete the record from the db
         $document->delete();
 
-        return response()->json(['message' => 'Document delete successfully'], 200);
+        return response()->json(['message' => 'Document deleted successfully'], 200);
     }
 
     /**
