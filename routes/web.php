@@ -53,6 +53,7 @@ Route::prefix('web/pet-record')->middleware('auth:sanctum')
         function () {
             Route::post('/upload', 'create');
             Route::get('/list/{id}', 'getList');
+            Route::delete('/delete/{id}', 'delete');
         });
 
 Route::prefix('web/pet')->middleware('auth:sanctum')
