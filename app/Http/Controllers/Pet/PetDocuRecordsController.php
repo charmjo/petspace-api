@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PetDocuRecordsController extends Controller
 {
-
+    private const DOCUMENT_NOT_FOUND_MSG = 'Document not found.';
     /**
      * @OA\Post(
      *     path="/pet-record/upload",
@@ -85,8 +85,33 @@ class PetDocuRecordsController extends Controller
 
     }
 
-    public function delete ($id) : void {
+    public function delete ($documentId) : JsonResponse {
         // TODO: DELETE
+        // check if document exists
+        $document = PetDocuRecords::find($documentId);
+
+        if($document === null) {
+            return response()->json(['message' => self::DOCUMENT_NOT_FOUND_MSG], 404);
+        }
+
+        // get logged user
+        // Validate access for pet owners and family members
+        $petOwnerId = $document->pet->pet_owner_id;
+        $authId = Auth::id();
+        $mainMembers = User::getFamilyMembers($petOwnerId);
+        if ($authId !== $petOwnerId && !in_array($authId,$mainMembers)) {
+            return response()->json(['message' => self::DOCUMENT_NOT_FOUND_MSG], 404);
+        }
+
+        // delete existing file
+        if($document->record_path !== null) {
+            Storage::delete($document->record_path);
+        }
+
+        // delete the record from the db
+        $document->delete();
+
+        return response()->json(['message' => 'Document delete successfully'], 200);
     }
 
     /**
@@ -162,7 +187,7 @@ class PetDocuRecordsController extends Controller
 
         // check if null
         if($pet->docuRecords === null) {
-            return response()->json(["error"=>"No documents found"],404);
+            return response()->json(["message"=>"No documents found"],404);
         }
         // assign pet records to records
         $records = $pet->docuRecords;

@@ -156,7 +156,7 @@ class PetController extends Controller
         }
 
         if($pet === null) {
-            return response()->json(["error"=>"Pet not found"],404);
+            return response()->json(["message"=>"Pet not found"],404);
         }
 
         // will need some type of return message for this. i'd rather not make a response action since it sounds overkill.

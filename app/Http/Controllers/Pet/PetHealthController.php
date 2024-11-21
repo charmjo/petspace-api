@@ -145,9 +145,9 @@ class PetHealthController extends Controller
             Log::debug($e->getMessage());
             // Unique or foreign key constraint violation for added allergen.
             // I am doing this to minimize queries.
-            // unique key constraint violation is the most probable error that I will be facing as I will format the input and the validation.
+            // unique key constraint violation is the most probable message that I will be facing as I will format the input and the validation.
             if ($e->getCode() == 23000) {
-                return response()->json(['error' => 'Allergy record already exists'],409);
+                return response()->json(['message' => 'Allergy record already exists'],409);
             }
         }
 
