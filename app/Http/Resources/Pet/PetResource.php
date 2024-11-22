@@ -29,7 +29,8 @@ class PetResource extends JsonResource
             'bio' => $this->bio,
             'is_microchipped' => $this->is_microchipped,
             'is_spayed_neutered' => $this->is_spayed_neutered,
-            'microchip_id' => $this->microchip_id,
+            // not ideal but this fixes the issue without needing to re-migrate the db
+            'microchip_id' => (int) $this->microchip_id,
             'pet_image' => $temporaryUrl
         ];
     }
